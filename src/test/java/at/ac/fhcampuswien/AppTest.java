@@ -20,4 +20,17 @@ public class AppTest {
     public static void finish() {
         System.out.println("Finished Testing Exercise 1");
     }
+
+    @Test
+    public void testSetArticles1() {
+        List<Article> articles = new ArrayList<>();
+        AppController controller = new AppController();
+        controller.setArticles(articles);
+
+        assertEquals(articles.size(), controller.getArticleCount());
+    }
+
+    @Test
+    public void testSetArticles2() {
+    }
 }
