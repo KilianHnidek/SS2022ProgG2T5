@@ -10,10 +10,12 @@ public class Menu {
 
     public void start() {
         controller = new AppController();
-        printMenu();
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
-        handleInput(input);
+        while (true) {
+            printMenu();
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next();
+            handleInput(input);
+        }
     }
 
     private void handleInput(String input) {
@@ -53,7 +55,7 @@ public class Menu {
                     System.out.print(", ");
                 }
             }
-            System.out.print("]");
+            System.out.println("]");
         }
     }
 
@@ -62,9 +64,14 @@ public class Menu {
         if (articles.size() <= 0) {
             System.out.println("No article listed under this category");
         } else {
-            for (Article article : ctrl.getAllNewsBitcoin()) {
-                System.out.println(article.toString());
+            System.out.print("[");
+            for (Article a : articles) {
+                System.out.print(a.toString());
+                if (articles.indexOf(a) + 1 != articles.size()) {
+                    System.out.print(", ");
+                }
             }
+            System.out.println("]");
         }
     }
 

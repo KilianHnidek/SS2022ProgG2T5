@@ -18,15 +18,15 @@ public class AppController {
     }
 
     public int getArticleCount() {
-        return articles == null ? 0 : articles.size();
+        return articles != null ? articles.size() : 0;
     }
 
     public List<Article> getTopHeadlinesAustria() {
-        return articles == null ? new ArrayList<>() : articles;
+        return articles != null ? articles : new ArrayList<>();
     }
 
     public List<Article> getAllNewsBitcoin() {
-        return filterList("bitcoin", articles);
+        return articles != null ? filterList("bitcoin", articles) : new ArrayList<>();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {
