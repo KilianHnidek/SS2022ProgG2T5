@@ -27,7 +27,9 @@ public class Menu {
             case ("y"):
                 getArticleCount(controller);
                 break;
-            case ("q"): System.exit(0);
+            case ("q"):
+                printExitMessage();
+                System.exit(0);
                 break;
             default:
                 Menu.printInvalidInputMessage();
