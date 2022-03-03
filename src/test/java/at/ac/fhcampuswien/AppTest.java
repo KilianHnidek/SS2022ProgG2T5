@@ -34,7 +34,6 @@ public class AppTest {
             Method handleInput = Menu.class.getDeclaredMethod("handleInput", String.class);
             assertEquals("private", Modifier.toString(handleInput.getModifiers()), "handleInput");
             assertEquals("void", handleInput.getReturnType().toString());
-
         } catch (Exception e) {
             e.printStackTrace();
             fail("Ups something went terribly wrong here...");
