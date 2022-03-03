@@ -6,7 +6,7 @@ public class AppController {
     private List<Article> articles;
 
     public AppController() {
-        //articles = new ArrayList<>();
+        articles = generateMockList();
     }
 
     /**
@@ -25,8 +25,13 @@ public class AppController {
         return articles == null ? new ArrayList<>() : articles;
     }
 
+    public List<Article> getAllNewsBitcoin() {
+        return filterList("bitcoin", articles);
+    }
+
     protected static List<Article> filterList(String query, List<Article> articles) {
         List<Article> res_articles = new ArrayList<>();
+
         for (Article a : articles) {
             if (a.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 res_articles.add(a);
@@ -35,15 +40,18 @@ public class AppController {
         return res_articles;
     }
 
-    public List<Article> getAllNewsBitcoin() {
-        return filterList("bitcoin", new ArrayList<>());
-    }
-
     /**
      * ! HIER
      */
 
     private static List<Article> generateMockList() {
-        return null;
+        List<Article> articles = new ArrayList<>();
+        articles.add(new Article("abc", "BItcOin"));
+        articles.add(new Article("abc", "hallo bitcoin"));
+        articles.add(new Article("abc", "BiTcOiN"));
+        articles.add(new Article("abc", "gibMalBitcoinHallo"));
+        articles.add(new Article("abc", "hallo"));
+        articles.add(new Article("abc", "nichtCrypto"));
+        return articles;
     }
 }
