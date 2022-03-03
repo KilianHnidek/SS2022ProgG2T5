@@ -5,9 +5,13 @@ import java.util.*;
 public class AppController {
     private List<Article> articles;
 
-    public AppController () {
+    public AppController() {
         //articles = new ArrayList<>();
     }
+
+    /**
+     * ! VON HIER
+     */
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
@@ -28,14 +32,17 @@ public class AppController {
                 res_articles.add(a);
             }
         }
-        
         return res_articles;
     }
 
     public List<Article> getAllNewsBitcoin() {
         return filterList("bitcoin", new ArrayList<>());
     }
-    
+
+    /**
+     * ! HIER
+     */
+
     private static List<Article> generateMockList() {
         return null;
     }

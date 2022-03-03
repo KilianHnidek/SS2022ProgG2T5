@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -13,7 +14,6 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
         handleInput(input);
-
     }
 
     private void handleInput(String input) {
@@ -42,29 +42,23 @@ public class Menu {
     }
 
     private void getTopHeadlinesAustria(AppController ctrl) {
-        for (Article article : ctrl.getTopHeadlinesAustria()) {
-            if (article == null) {
-                System.out.println("No article listed under this category");
-            } else {
-                if (article.getAuthor() == null) {
-                    System.out.println(article.getTitle() + " was written by " + "unknown");
-                } else {
-                    System.out.println(article.getTitle() + " was written by " + article.getAuthor());
-                }
+        List<Article> articles = ctrl.getTopHeadlinesAustria();
+        if (articles.size() <= 0) {
+            System.out.println("No article listed under this category");
+        } else {
+            for (Article article : ctrl.getTopHeadlinesAustria()) {
+                System.out.println(article.toString());
             }
         }
     }
 
     private void getAllNewsBitcoin(AppController ctrl) {
-        for (Article article : ctrl.getAllNewsBitcoin()) {
-            if (article == null) {
-                System.out.println("No article listed under this category");
-            } else {
-                if (article.getAuthor() == null) {
-                    System.out.println(article.getTitle() + " was written by " + "unknown");
-                } else {
-                    System.out.println(article.getTitle() + " was written by " + article.getAuthor());
-                }
+        List<Article> articles = ctrl.getAllNewsBitcoin();
+        if (articles.size() <= 0) {
+            System.out.println("No article listed under this category");
+        } else {
+            for (Article article : ctrl.getAllNewsBitcoin()) {
+                System.out.println(article.toString());
             }
         }
     }
@@ -92,3 +86,5 @@ public class Menu {
                 );
     }
 }
+
+
