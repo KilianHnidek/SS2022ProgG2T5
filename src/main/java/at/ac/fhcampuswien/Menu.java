@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-
-    private AppController controller = new AppController();
+    private AppController controller;
     private final static String INVALID_INPUT_MESSAGE = "Invalid input!";
     private final static String EXIT_MESSAGE = "Bye bye!";
 
     public void start() {
+        controller = new AppController();
         printMenu();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
@@ -46,9 +46,14 @@ public class Menu {
         if (articles.size() <= 0) {
             System.out.println("No article listed under this category");
         } else {
-            for (Article article : ctrl.getTopHeadlinesAustria()) {
-                System.out.println(article.toString());
+            System.out.print("[");
+            for (Article a : articles) {
+                System.out.print(a.toString());
+                if (articles.indexOf(a) + 1 != articles.size()) {
+                    System.out.print(", ");
+                }
             }
+            System.out.print("]");
         }
     }
 

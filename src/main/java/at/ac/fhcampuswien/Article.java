@@ -27,6 +27,6 @@ public class Article {
 
     @Override
     public String toString() {
-        return /*getClass().getSimpleName()+*/ "[Title:" + title + System.lineSeparator() + "Author:" + author + "]";
+        return /*getClass().getSimpleName()+*/ "Title:" + title + System.lineSeparator() + "Author:" + author + "";
     }
 }
