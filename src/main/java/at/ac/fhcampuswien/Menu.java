@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private AppController controller;
+    private AppController controller = new AppController();
     private final static String INVALID_INPUT_MESSAGE = "Invalid input!";
     private final static String EXIT_MESSAGE = "Bye bye!";
 
@@ -19,13 +19,13 @@ public class Menu {
     private void handleInput(String input) {
         switch (input) {
             case ("a"):
-                controller.getTopHeadlinesAustria();
+                getTopHeadlinesAustria(controller);
                 break;
             case ("b"):
-                controller.getAllNewsBitcoin();
+                getAllNewsBitcoin(controller);
                 break;
             case ("y"):
-                controller.getArticleCount();
+                getArticleCount(controller);
                 break;
             case ("q"): System.exit(0);
                 break;
