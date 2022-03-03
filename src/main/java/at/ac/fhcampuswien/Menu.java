@@ -9,18 +9,7 @@ public class Menu {
     private final static String EXIT_MESSAGE = "Bye bye!";
 
     public void start() {
-        System.out.print
-                (
-                        "****************************" + System.lineSeparator() +
-                                "*    Welcome to NewsApp    *" + System.lineSeparator() +
-                                "****************************" + System.lineSeparator() +
-                                "Enter what you wanna do:" + System.lineSeparator() +
-                                "a: Get top headlines austria" + System.lineSeparator() +
-                                "b: Get all news about bitcoin" + System.lineSeparator() +
-                                "y: Count articles" + System.lineSeparator() +
-                                "q: Quit program" + System.lineSeparator()
-
-                );
+        printMenu();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
         handleInput(input);
@@ -51,12 +40,30 @@ public class Menu {
 
     private void getTopHeadlinesAustria(AppController ctrl) {
         for (Article article : ctrl.getTopHeadlinesAustria()) {
-            System.out.println(article.getTitle());
+            if (article == null) {
+                System.out.println("No article listed under this category");
+            } else {
+                if (article.getAuthor() == null) {
+                    System.out.println(article.getTitle() + " was written by " + "unknown");
+                } else {
+                    System.out.println(article.getTitle() + " was written by " + article.getAuthor());
+                }
+            }
         }
     }
 
     private void getAllNewsBitcoin(AppController ctrl) {
-
+        for (Article article : ctrl.getAllNewsBitcoin()) {
+            if (article == null) {
+                System.out.println("No article listed under this category");
+            } else {
+                if (article.getAuthor() == null) {
+                    System.out.println(article.getTitle() + " was written by " + "unknown");
+                } else {
+                    System.out.println(article.getTitle() + " was written by " + article.getAuthor());
+                }
+            }
+        }
     }
 
     private static void printExitMessage() {
@@ -68,5 +75,17 @@ public class Menu {
     }
 
     private static void printMenu() {
+        System.out.print
+                (
+                        "****************************" + System.lineSeparator() +
+                                "*    Welcome to NewsApp    *" + System.lineSeparator() +
+                                "****************************" + System.lineSeparator() +
+                                "Enter what you wanna do:" + System.lineSeparator() +
+                                "a: Get top headlines austria" + System.lineSeparator() +
+                                "b: Get all news about bitcoin" + System.lineSeparator() +
+                                "y: Count articles" + System.lineSeparator() +
+                                "q: Quit program" + System.lineSeparator()
+
+                );
     }
 }

@@ -18,6 +18,18 @@ public class AppTest {
         System.out.println("Finished Testing Exercise 1");
     }
 
+
+    /**
+     * ! Checking if correct modifier was used
+     * ! Checking if name was spelled correctly
+     */
+
+    @Test
+
+
+
+
+
     @Test
     public void testSetArticles1() {
         List<Article> articles = new ArrayList<>();
