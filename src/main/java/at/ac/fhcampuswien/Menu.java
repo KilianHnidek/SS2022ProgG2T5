@@ -33,6 +33,7 @@ public class Menu {
                 break;
             default:
                 Menu.printInvalidInputMessage();
+                start();
         }
     }
 
