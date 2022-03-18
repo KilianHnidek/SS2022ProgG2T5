@@ -45,6 +45,7 @@ public class AppController {
      */
 
     private static List<Article> generateMockList() {
+
         List<Article> articles = new ArrayList<>();
         articles.add(new Article("abc", "BItcOin"));
         articles.add(new Article("abc", "hallo bitcoin"));

@@ -21,7 +21,6 @@ public class AppTest {
         System.out.println("Finished Testing Exercise 1");
     }
 
-
     /**
      * ! Checking if correct modifier was used
      * ! Checking if name was spelled correctly
