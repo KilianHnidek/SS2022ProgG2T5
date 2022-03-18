@@ -41,6 +41,16 @@
             <Font name="Times New Roman" size="12.0" />
          </font>
       </Label>
-      <Pane fx:id="emptyPane" layoutY="-6.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" prefHeight="50.0" prefWidth="480.0" style="-fx-background-color: green;" />
+      <Pane fx:id="emptyPane" layoutY="-6.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" prefHeight="50.0" prefWidth="480.0" />
+      <ImageView fx:id="pageFliphilip" fitHeight="97.0" fitWidth="126.0" layoutX="376.0" layoutY="307.0" onMouseClicked="#handlePhilipTouched" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@assets/pageFliphilip.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pageFlifilipe" disable="true" fitHeight="97.0" fitWidth="126.0" layoutX="-10.0" layoutY="307.0" onMouseClicked="#handleFilipeTouched" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@assets/pageFlifilipe.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
