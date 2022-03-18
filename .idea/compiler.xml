@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SS2022ProgG2T5_v2" />
+        <module name="SS2022ProgG2T5" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SS2022ProgG2T5_v2" target="16" />
+      <module name="SS2022ProgG2T5" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>
