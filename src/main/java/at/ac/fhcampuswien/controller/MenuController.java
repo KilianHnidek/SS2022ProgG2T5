@@ -1,7 +1,8 @@
 package at.ac.fhcampuswien.controller;
 
-import at.ac.fhcampuswien.AppController;
-import at.ac.fhcampuswien.Article;
+import at.ac.fhcampuswien.normalClass.AppController;
+import at.ac.fhcampuswien.normalClass.Article;
+import at.ac.fhcampuswien.enums.CategoryEnum;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +23,7 @@ public class MenuController {
 
     private double mouseX;
     private int articleCounter, pageNumber = 1;
+    private CategoryEnum categoryEnum;
 
     @FXML
     private Pane emptyPane, anchorPane;
@@ -46,6 +48,9 @@ public class MenuController {
 
     @FXML
     void getAllNewsAboutBitcoin(MouseEvent event) {
+
+        categoryEnum = CategoryEnum.Bitcoin;
+
         if (pageNumber * 6 <= ctrl.getAllNewsBitcoin().size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
@@ -108,17 +113,21 @@ public class MenuController {
 
     @FXML
     void handlePhilipTouched(MouseEvent event) {
-
+        // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-        getTopHeadlinesAustria(event);
+        if (categoryEnum == CategoryEnum.Bitcoin) {
+            getAllNewsAboutBitcoin(event);
+        } else {
+            getTopHeadlinesAustria(event);
+        }
     }
 
     @FXML
     void handleFilipeTouched(MouseEvent event) {
-
+        // left
         pageNumber--;
         articleCounter -= 6;
 
@@ -126,11 +135,18 @@ public class MenuController {
             pageFlifilipe.setVisible(false);
             pageFlifilipe.setDisable(true);
         }
-        getTopHeadlinesAustria(event);
+
+        if (categoryEnum == CategoryEnum.Bitcoin) {
+            getAllNewsAboutBitcoin(event);
+        } else {
+            getTopHeadlinesAustria(event);
+        }
     }
 
     @FXML
     void getTopHeadlinesAustria(MouseEvent event) {
+
+        categoryEnum = null;
 
         if (pageNumber * 6 <= ctrl.getTopHeadlinesAustria().size()) {
             pageFliphilip.setVisible(true);

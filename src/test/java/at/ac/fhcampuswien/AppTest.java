@@ -1,16 +1,19 @@
 package at.ac.fhcampuswien;
 
+import at.ac.fhcampuswien.normalClass.AppController;
+import at.ac.fhcampuswien.normalClass.Article;
+import at.ac.fhcampuswien.normalClass.Menu;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppTest {
+
     @BeforeAll
     public static void init() {
         System.out.println("Testing Exercise 1");
