@@ -59,10 +59,8 @@ public class NewsApi {
     }
 
     public static void main(String[] args) throws IOException {
-
         NewsApi newsApi = new NewsApi();
         NewsResponse response = newsApi.run();
-
     }
 }
 

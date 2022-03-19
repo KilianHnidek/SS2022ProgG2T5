@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MenuController {
@@ -47,7 +48,7 @@ public class MenuController {
     }
 
     @FXML
-    void getAllNewsAboutBitcoin(MouseEvent event) {
+    void getAllNewsAboutBitcoin(MouseEvent event) throws IOException {
 
         categoryEnum = CategoryEnum.bitcoin;
 
@@ -112,7 +113,7 @@ public class MenuController {
     }
 
     @FXML
-    void handlePhilipTouched(MouseEvent event) {
+    void handlePhilipTouched(MouseEvent event) throws IOException {
         // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
@@ -126,7 +127,7 @@ public class MenuController {
     }
 
     @FXML
-    void handleFilipeTouched(MouseEvent event) {
+    void handleFilipeTouched(MouseEvent event) throws IOException {
         // left
         pageNumber--;
         articleCounter -= 6;
@@ -144,7 +145,7 @@ public class MenuController {
     }
 
     @FXML
-    void getTopHeadlinesAustria(MouseEvent event) {
+    void getTopHeadlinesAustria(MouseEvent event) throws IOException {
 
         categoryEnum = null;
 
