@@ -2,5 +2,13 @@ package at.ac.fhcampuswien.enums;
 
 public enum CategoryEnum
 {
-    Bitcoin,
+    bitcoin,
+    corona,
+    business,
+    entertainment,
+    general,
+    health,
+    science,
+    sports,
+    technology,
 }

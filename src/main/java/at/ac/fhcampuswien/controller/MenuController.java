@@ -49,7 +49,7 @@ public class MenuController {
     @FXML
     void getAllNewsAboutBitcoin(MouseEvent event) {
 
-        categoryEnum = CategoryEnum.Bitcoin;
+        categoryEnum = CategoryEnum.bitcoin;
 
         if (pageNumber * 6 <= ctrl.getAllNewsBitcoin().size()) {
             pageFliphilip.setVisible(true);
@@ -118,7 +118,7 @@ public class MenuController {
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-        if (categoryEnum == CategoryEnum.Bitcoin) {
+        if (categoryEnum == CategoryEnum.bitcoin) {
             getAllNewsAboutBitcoin(event);
         } else {
             getTopHeadlinesAustria(event);
@@ -136,7 +136,7 @@ public class MenuController {
             pageFlifilipe.setDisable(true);
         }
 
-        if (categoryEnum == CategoryEnum.Bitcoin) {
+        if (categoryEnum == CategoryEnum.bitcoin) {
             getAllNewsAboutBitcoin(event);
         } else {
             getTopHeadlinesAustria(event);

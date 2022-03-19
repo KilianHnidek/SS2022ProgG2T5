@@ -1,5 +1,8 @@
 package at.ac.fhcampuswien;
 
+import at.ac.fhcampuswien.enums.CategoryEnum;
+import at.ac.fhcampuswien.enums.EndpointEnum;
+
 import java.util.*;
 
 public class AppController {
@@ -23,10 +26,21 @@ public class AppController {
     }
 
     public List<Article> getTopHeadlinesAustria() {
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.categoryEnum = CategoryEnum.corona;
+
+
+        NewsResponse newsResponse = new NewsResponse();
+        NewsApi newsApi = new NewsApi();
+        //newsResponse = newsApi.run();
+
         return articles != null ? articles : new ArrayList<>();
     }
 
     public List<Article> getAllNewsBitcoin() {
+        NewsApi.endpointEnum = EndpointEnum.everything;
+        NewsApi.categoryEnum = CategoryEnum.bitcoin;
+
         return articles != null ? filterList("bitcoin", articles) : new ArrayList<>();
     }
 

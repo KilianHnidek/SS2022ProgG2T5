@@ -2,6 +2,18 @@ package at.ac.fhcampuswien.enums;
 
 public enum LanguageEnum
 {
-    german,
-    english,
+    ar,
+    de,
+    en,
+    es,
+    fr,
+    he,
+    it,
+    nl,
+    no,
+    pt,
+    ru,
+    se,
+    ud,
+    zh,
 }
