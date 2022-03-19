@@ -1,8 +1,5 @@
 package at.ac.fhcampuswien;
 
-import at.ac.fhcampuswien.normalClass.AppController;
-import at.ac.fhcampuswien.normalClass.Article;
-import at.ac.fhcampuswien.normalClass.Menu;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

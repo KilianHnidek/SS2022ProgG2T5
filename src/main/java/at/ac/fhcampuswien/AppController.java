@@ -1,8 +1,9 @@
-package at.ac.fhcampuswien.normalClass;
+package at.ac.fhcampuswien;
 
 import java.util.*;
 
 public class AppController {
+    
     private List<Article> articles;
 
     public AppController() {

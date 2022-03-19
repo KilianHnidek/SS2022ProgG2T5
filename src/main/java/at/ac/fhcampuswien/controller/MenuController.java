@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.controller;
 
-import at.ac.fhcampuswien.normalClass.AppController;
-import at.ac.fhcampuswien.normalClass.Article;
+import at.ac.fhcampuswien.AppController;
+import at.ac.fhcampuswien.Article;
 import at.ac.fhcampuswien.enums.CategoryEnum;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;

@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.normalClass;
+package at.ac.fhcampuswien;
 
 public class Article {
 
@@ -7,6 +7,16 @@ public class Article {
     public Article(String author, String title) {
         this.setAuthor(author);
         this.setTitle(title);
+    }
+
+    public Article(String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
+        this.content = content;
     }
 
     public void setAuthor(String author) {

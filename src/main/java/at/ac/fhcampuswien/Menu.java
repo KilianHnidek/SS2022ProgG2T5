@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.normalClass;
+package at.ac.fhcampuswien;
 
 import java.util.List;
 import java.util.Scanner;
