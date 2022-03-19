@@ -2,7 +2,7 @@ package at.ac.fhcampuswien.normalClass;
 
 public class Article {
 
-    private String author, title;
+    private String author, title, description, url, urlToImage, publishedAt, content;
 
     public Article(String author, String title) {
         this.setAuthor(author);
