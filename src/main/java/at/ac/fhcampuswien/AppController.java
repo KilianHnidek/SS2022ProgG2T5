@@ -34,6 +34,8 @@ public class AppController {
         NewsResponse newsResponse = new NewsResponse();
         NewsApi newsApi = new NewsApi();
         newsResponse = newsApi.run();
+
+
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
         //return articles != null ? articles : new ArrayList<>();
     }
@@ -42,11 +44,12 @@ public class AppController {
         NewsApi.endpointEnum = EndpointEnum.everything;
         NewsApi.categoryEnum = CategoryEnum.general;
 
-        NewsResponse newsResponse = new NewsResponse();
-        NewsApi newsApi = new NewsApi();
-        newsResponse = newsApi.run();
 
-        return newsResponse.getArticles() != null ? filterList("bitcoin", newsResponse.getArticles()) : new ArrayList<>();
+        NewsApi newsApi = new NewsApi();
+        NewsResponse newsResponse = newsApi.run();
+
+        //return newsResponse.getArticles() != null ? filterList("bitcoin", newsResponse.getArticles()) : new ArrayList<>();
+        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {

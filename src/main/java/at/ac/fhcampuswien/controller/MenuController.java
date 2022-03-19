@@ -49,10 +49,14 @@ public class MenuController {
 
     @FXML
     void getAllNewsAboutBitcoin(MouseEvent event) throws IOException {
-
         categoryEnum = CategoryEnum.bitcoin;
+        List<Article> articles = ctrl.getAllNewsBitcoin();
 
-        if (pageNumber * 6 <= ctrl.getAllNewsBitcoin().size()) {
+        for (Article a : articles) {
+            System.out.println(a);
+        }
+
+        if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
         } else {
@@ -60,7 +64,7 @@ public class MenuController {
             pageFliphilip.setDisable(true);
         }
 
-        List<Article> articles = ctrl.getAllNewsBitcoin();
+
         int counterLeftRight = 0;
         articleCounter = pageNumber * 6 - 6;
 

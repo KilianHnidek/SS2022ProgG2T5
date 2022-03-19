@@ -22,10 +22,12 @@ public class NewsApi {
     public static EndpointEnum endpointEnum;
     public static CategoryEnum categoryEnum;
 
-
     NewsResponse run() throws IOException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addPathSegment("v2");
+
+        NewsApi.endpointEnum = EndpointEnum.everything;
+        NewsApi.categoryEnum = CategoryEnum.general;
 
         urlBuilder.addPathSegment(endpointEnum.toString());
         urlBuilder.addQueryParameter("q", categoryEnum.toString());
@@ -61,6 +63,10 @@ public class NewsApi {
     public static void main(String[] args) throws IOException {
         NewsApi newsApi = new NewsApi();
         NewsResponse response = newsApi.run();
+
+        for (Article a : response.getArticles()) {
+            System.out.println(a);
+        }
     }
 }
 
