@@ -1,17 +1,16 @@
-package at.ac.fhcampuswien.apiClass;
+package at.ac.fhcampuswien;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.google.gson.Gson;
 
-import at.ac.fhcampuswien.Article;
 import at.ac.fhcampuswien.enums.CategoryEnum;
 import at.ac.fhcampuswien.enums.EndpointEnum;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
 
 public class NewsApi {
 
@@ -22,7 +21,6 @@ public class NewsApi {
     final OkHttpClient client = new OkHttpClient();
 
     NewsResponse run(String url) throws IOException {
-
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addPathSegment("v2");
         urlBuilder.addPathSegment(endpointEnum.toString());
@@ -33,20 +31,17 @@ public class NewsApi {
 
         url = urlBuilder.build().toString();
 
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        System.out.println(url);
-
         try (Response response = client.newCall(request).execute()) {
-
             Gson gson = new Gson();
 
-            NewsResponse newsResponse = gson.fromJson(response.body().toString(), NewsResponse.class);
-            return newsResponse;
+            //System.out.println(response.body().string());
 
+            NewsResponse newsResponse = gson.fromJson(response.body().string(), NewsResponse.class);
+            return newsResponse;
         }
     }
 

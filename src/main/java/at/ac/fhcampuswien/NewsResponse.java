@@ -1,12 +1,11 @@
-package at.ac.fhcampuswien.apiClass;
+package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.Article;
 
 import java.util.List;
 
 public class NewsResponse {
-
-    public String status;
+    private String status;
     private int totalResults;
     private List<Article> articles;
 
@@ -16,16 +15,8 @@ public class NewsResponse {
         this.articles = articles;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public NewsResponse(){
 
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
     }
 
     public String getStatus() {

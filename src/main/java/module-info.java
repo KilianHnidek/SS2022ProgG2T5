@@ -5,7 +5,7 @@ module at.ac.fhcampuswien {
     requires com.google.gson;
 
 
-    opens at.ac.fhcampuswien to javafx.fxml;
+    opens at.ac.fhcampuswien to javafx.fxml, com.google.gson;
     exports at.ac.fhcampuswien;
     exports at.ac.fhcampuswien.controller;
     opens at.ac.fhcampuswien.controller to javafx.fxml;
