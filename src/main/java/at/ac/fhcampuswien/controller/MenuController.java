@@ -52,9 +52,9 @@ public class MenuController {
         categoryEnum = CategoryEnum.bitcoin;
         List<Article> articles = ctrl.getAllNewsBitcoin();
 
-        for (Article a : articles) {
+        /*for (Article a : articles) {
             System.out.println(a);
-        }
+        }*/
 
         if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
