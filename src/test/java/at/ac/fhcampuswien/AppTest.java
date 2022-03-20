@@ -124,7 +124,7 @@ public class AppTest {
     public void testGetTopHeadlinesAustria2() {
         try {
             AppController controller = new AppController();
-            assertTrue(controller.getTopHeadlinesAustria().size() == 0);
+            assertEquals(0, controller.getTopHeadlinesAustria().size());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Ups something went terribly wrong here...");

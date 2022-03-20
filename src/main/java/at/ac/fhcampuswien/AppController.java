@@ -1,10 +1,5 @@
 package at.ac.fhcampuswien;
 
-import at.ac.fhcampuswien.enums.CategoryEnum;
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
-
-import java.io.IOException;
 import java.util.*;
 
 public class AppController {
@@ -12,7 +7,7 @@ public class AppController {
     private List<Article> articles;
 
     public AppController() {
-        articles = generateMockList();
+        // articles = generateMockList();
     }
 
     /**
@@ -27,26 +22,12 @@ public class AppController {
         return articles != null ? articles.size() : 0;
     }
 
-    public List<Article> getTopHeadlinesAustria() throws IOException {
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.categoryEnum = CategoryEnum.business;
-        NewsApi.countryEnum = CountryEnum.at;
-
-        NewsResponse newsResponse = NewsApi.run();
-
-        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
-        //return articles != null ? articles : new ArrayList<>();
+    public List<Article> getTopHeadlinesAustria() {
+        return articles != null ? articles : new ArrayList<>();
     }
 
-    public List<Article> getAllNewsBitcoin() throws IOException {
-        NewsApi.endpointEnum = EndpointEnum.everything;
-        NewsApi.categoryEnum = CategoryEnum.general;
-        NewsApi.countryEnum = null;
-
-        NewsResponse newsResponse = NewsApi.run();
-
-        return newsResponse.getArticles() != null ? filterList("bitcoin", newsResponse.getArticles()) : new ArrayList<>();
-        //return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+    public List<Article> getAllNewsBitcoin() {
+        return articles != null ? filterList("bitcoin", articles) : new ArrayList<>();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {
@@ -64,7 +45,7 @@ public class AppController {
      * ! BIS HIER
      */
 
-    private static List<Article> generateMockList() {
+    public static List<Article> generateMockList() {
 
         List<Article> articles = new ArrayList<>();
 

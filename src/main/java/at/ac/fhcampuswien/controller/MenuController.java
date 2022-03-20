@@ -2,7 +2,6 @@ package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.AppController;
 import at.ac.fhcampuswien.Article;
-import at.ac.fhcampuswien.enums.CategoryEnum;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,23 +14,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MenuController {
-
-    private AppController ctrl = new AppController();
+    private final AppController ctrl = new AppController();
 
     private double mouseX;
     private int articleCounter, pageNumber = 1;
-    private CategoryEnum categoryEnum;
+    private boolean bitcoin;
+
+    {
+        ctrl.setArticles(AppController.generateMockList());
+    }
 
     @FXML
     private Pane emptyPane, anchorPane;
     @FXML
     private VBox vBoxArticlesLeft, vBoxArticlesRight;
-    @FXML
-    private Label allNewsAboutBitcoin, countArticles, quitProgram, topHeadlinesAustria;
     @FXML
     private ImageView pageFliphilip, pageFlifilipe;
 
@@ -48,13 +47,10 @@ public class MenuController {
     }
 
     @FXML
-    void getAllNewsAboutBitcoin(MouseEvent event) throws IOException {
-        categoryEnum = CategoryEnum.bitcoin;
+    void getAllNewsAboutBitcoin(MouseEvent event) {
         List<Article> articles = ctrl.getAllNewsBitcoin();
 
-        /*for (Article a : articles) {
-            System.out.println(a);
-        }*/
+        bitcoin = true;
 
         if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
@@ -117,13 +113,13 @@ public class MenuController {
     }
 
     @FXML
-    void handlePhilipTouched(MouseEvent event) throws IOException {
+    void handlePhilipTouched(MouseEvent event) {
         // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-        if (categoryEnum == CategoryEnum.bitcoin) {
+        if (bitcoin) {
             getAllNewsAboutBitcoin(event);
         } else {
             getTopHeadlinesAustria(event);
@@ -131,7 +127,7 @@ public class MenuController {
     }
 
     @FXML
-    void handleFilipeTouched(MouseEvent event) throws IOException {
+    void handleFilipeTouched(MouseEvent event) {
         // left
         pageNumber--;
         articleCounter -= 6;
@@ -141,7 +137,7 @@ public class MenuController {
             pageFlifilipe.setDisable(true);
         }
 
-        if (categoryEnum == CategoryEnum.bitcoin) {
+        if (bitcoin) {
             getAllNewsAboutBitcoin(event);
         } else {
             getTopHeadlinesAustria(event);
@@ -149,9 +145,8 @@ public class MenuController {
     }
 
     @FXML
-    void getTopHeadlinesAustria(MouseEvent event) throws IOException {
-
-        categoryEnum = null;
+    void getTopHeadlinesAustria(MouseEvent event) {
+        bitcoin = false;
 
         if (pageNumber * 6 <= ctrl.getTopHeadlinesAustria().size()) {
             pageFliphilip.setVisible(true);
