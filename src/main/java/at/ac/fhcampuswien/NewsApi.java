@@ -2,14 +2,9 @@ package at.ac.fhcampuswien;
 
 import java.io.IOException;
 
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.SortByEnum;
+import at.ac.fhcampuswien.enums.*;
 import com.google.gson.Gson;
-
-import at.ac.fhcampuswien.enums.CategoryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
 import okhttp3.*;
-
 
 public class NewsApi {
 
@@ -24,15 +19,13 @@ public class NewsApi {
     public static SortByEnum sortByEnum;
     public static String query;
 
-
     static NewsResponse run() throws IOException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
-        urlBuilder.addPathSegment("v2");
 
+        urlBuilder.addPathSegment("v2");
         urlBuilder.addPathSegment(endpointEnum.getName());
 
         urlBuilder.addQueryParameter("q", query);
-
         urlBuilder.addQueryParameter("apiKey", API_KEY);
 
         if (sortByEnum != null) {
@@ -42,9 +35,6 @@ public class NewsApi {
         if (countryEnum != null) {
             urlBuilder.addQueryParameter("country", countryEnum.toString());
         }
-
-
-        // https://newsapi.org/v2/everything?q=bitcoin&apiKey=<YOUR_API_KEY>
 
         System.out.println(urlBuilder.build());
 
@@ -60,7 +50,6 @@ public class NewsApi {
                 return gson.fromJson(response.body().string(), NewsResponse.class);
 
                 /*
-
                     200 - OK. The request was executed successfully.
                     400 - Bad Request. The request was unacceptable, often due to a missing or misconfigured parameter.
                     401 - Unauthorized. Your API key was missing from the request, or wasn't correct.
@@ -77,17 +66,8 @@ public class NewsApi {
                     sourcesTooMany - You have requested too many sources in a single request. Try splitting the request into 2 smaller requests.
                     sourceDoesNotExist - You have requested a source which does not exist.
                     unexpectedError - This shouldn't happen, and if it does then it's our fault, not yours. Try the request again shortly.
-
                  */
             }
-
-            /*
-            3 infos:
-                -> status
-                -> number
-                -> articles
-             */
-
         }
     }
 /*
