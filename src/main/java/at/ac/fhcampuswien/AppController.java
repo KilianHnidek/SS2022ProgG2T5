@@ -61,7 +61,7 @@ public class AppController {
     }
 
     /**
-     * ! HIER
+     * ! BIS HIER
      */
 
     private static List<Article> generateMockList() {
