@@ -16,6 +16,7 @@ public class NewsResponse {
     }
 
     public NewsResponse(){
+
     }
 
     public String getStatus() {

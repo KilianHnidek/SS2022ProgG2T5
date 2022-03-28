@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -64,6 +65,8 @@ public class MenuController {
             pageFliphilip.setDisable(true);
         }
 
+        pageFlifilipe.setVisible(true);
+        pageFlifilipe.setDisable(false);
 
         int counterLeftRight = 0;
         articleCounter = pageNumber * 6 - 6;
@@ -113,7 +116,9 @@ public class MenuController {
 
     @FXML
     void getArticleCount(MouseEvent event) {
-        ctrl.getArticleCount();
+        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? ctrl.getArticleCount() + "" :  "count Articles" );
+
+        // was für ein Count wollen wir?
     }
 
     @FXML
@@ -130,30 +135,58 @@ public class MenuController {
         }
     }
 
+    void reloadMenu() {
+        for (int i = vBoxArticlesLeft.getChildren().size() - 1; i >= 0; i--) {
+            Node g = vBoxArticlesLeft.getChildren().get(i);
+            if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
+                vBoxArticlesLeft.getChildren().remove(g);
+            }
+        }
+        for (int i = vBoxArticlesRight.getChildren().size() - 1; i >= 0; i--) {
+            Node g = vBoxArticlesRight.getChildren().get(i);
+            if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
+                vBoxArticlesRight.getChildren().remove(g);
+            }
+        }
+        pageFlifilipe.setDisable(true);
+        pageFliphilip.setDisable(true);
+        pageFlifilipe.setVisible(false);
+        pageFliphilip.setVisible(false);
+
+        for (Node n : anchorPane.getChildren()) {
+            if (n.getClass().getSimpleName().equals("Label")) {
+                n.setDisable(false);
+                n.setVisible(true);
+            }
+        }
+
+        pageNumber = 1;
+    }
+
     @FXML
     void handleFilipeTouched(MouseEvent event) throws IOException {
         // left
         pageNumber--;
         articleCounter -= 6;
 
-        if (pageNumber == 1) {
-            pageFlifilipe.setVisible(false);
-            pageFlifilipe.setDisable(true);
+        if (pageNumber == 0) {
+            reloadMenu();
+        } else {
+            if (categoryEnum == CategoryEnum.bitcoin) {
+                getAllNewsAboutBitcoin(event);
+            } else {
+                getTopHeadlinesAustria(event);
+            }
         }
 
-        if (categoryEnum == CategoryEnum.bitcoin) {
-            getAllNewsAboutBitcoin(event);
-        } else {
-            getTopHeadlinesAustria(event);
-        }
     }
 
     @FXML
     void getTopHeadlinesAustria(MouseEvent event) throws IOException {
-
+        List<Article> articles = ctrl.getAllNewsBitcoin();
         categoryEnum = null;
 
-        if (pageNumber * 6 <= ctrl.getTopHeadlinesAustria().size()) {
+        if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
         } else {
@@ -161,7 +194,9 @@ public class MenuController {
             pageFliphilip.setDisable(true);
         }
 
-        List<Article> articles = ctrl.getTopHeadlinesAustria();
+        pageFlifilipe.setVisible(true);
+        pageFlifilipe.setDisable(false);
+
         int counterLeftRight = 0;
         articleCounter = pageNumber * 6 - 6;
 
