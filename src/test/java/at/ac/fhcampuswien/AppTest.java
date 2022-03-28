@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,16 +16,19 @@ public class AppTest {
     public static void init() {
         System.out.println("Testing Exercise 1");
     }
+    // Message before testing begins
 
     @AfterAll
     public static void finish() {
         System.out.println("Finished Testing Exercise 1");
     }
+    // Message after testing begins
 
     /**
      * ! Checking if correct modifier was used
      * ! Checking if name was spelled correctly
      */
+
 
     @Test
     public void testForTest() {
@@ -40,6 +44,7 @@ public class AppTest {
 
 
     @Test
+    @DisplayName("testSetArticles1 // Modifier && Return type")
     public void testSetArticles1() {
         // Checks for modifier and return type
         try {
@@ -53,6 +58,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testSetArticles2 // Set Articles")
     public void testSetArticles2() {
         List<Article> articles = new ArrayList<>();
         AppController controller = new AppController();
@@ -62,6 +68,7 @@ public class AppTest {
 
 
     @Test
+    @DisplayName("testGetArticleCount1 // Modifier && Return type")
     public void testGetArticleCount1() {
         // Checks for modifier and return type
         try {
@@ -75,6 +82,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetArticleCount2 // Article Count size")
     public void testGetArticleCount2() {
         // If not yet set, checking if return is equal to 0
         try {
@@ -88,6 +96,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetArticleCount3 // Article Count size")
     public void testGetArticleCount3() {
         // Setting
         try {
@@ -108,6 +117,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetTopHeadlinesAustria1 // Modifier && Return type")
     public void testGetTopHeadlinesAustria1() {
         // Checks for modifier and return type
         try {
@@ -121,6 +131,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetTopHeadlinesAustria2 // Austria TOP Article size")
     public void testGetTopHeadlinesAustria2() {
         try {
             AppController controller = new AppController();
@@ -134,6 +145,7 @@ public class AppTest {
     // following test might be deleted/updated later
 
     @Test
+    @DisplayName("testGetTopHeadlinesAustria3 // Austria TOP Article size")
     public void testGetTopHeadlinesAustria3() {
         // Setting
         try {
@@ -156,6 +168,7 @@ public class AppTest {
     // insert more tests for getTopHeadlinesAustria here
 
     @Test
+    @DisplayName("testGetAllNewsBitcoin1 // Modifier && Return type")
     public void testGetAllNewsBitcoin1() {
         // Checks for modifier and return type
         try {
@@ -169,6 +182,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetAllNewsBitcoin2 // Bitcoin Article size")
     public void testGetAllNewsBitcoin2() {
         try {
             AppController controller = new AppController();
@@ -190,6 +204,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testGetAllNewsBitcoin3 // Bitcoin Article size")
     public void testGetAllNewsBitcoin3() {
         try {
             AppController controller = new AppController();
@@ -206,6 +221,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testFilterList1 // Modifier && Return type")
     public void testFilterList1() {
         // Checks for modifier and return type
         try {
@@ -219,6 +235,7 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("testFilterList2 // Mock Liste nach Co gesucht")
     public void testFilterList2() {
         try {
             List<Article> articles = new ArrayList<>();
@@ -231,7 +248,28 @@ public class AppTest {
             articles.add(new Article("abc", "nichtkrypto"));
 
             assertEquals(AppController.filterList("Co", articles).size(), 4);
+
+        } catch (Exception e) { // if function in progress fails
+            e.printStackTrace();
+            fail("Ups something went terribly wrong here...");
+        }
+    }
+
+    @Test
+    @DisplayName("testFilterList3 // Mock Liste nach x gesucht")
+    public void testFilterList3() {
+        try {
+            List<Article> articles = new ArrayList<>();
+
+            articles.add(new Article("abc", "BItcoin"));
+            articles.add(new Article("abc", "hallo bitcoin"));
+            articles.add(new Article("abc", "BiTcOiN"));
+            articles.add(new Article("abc", "gönnBitcoinHallo"));
+            articles.add(new Article("abc", "hallo"));
+            articles.add(new Article("abc", "nichtkrypto"));
+
             assertEquals(AppController.filterList("x", articles).size(), 0);
+
         } catch (Exception e) {
             e.printStackTrace();
             fail("Ups something went terribly wrong here...");
