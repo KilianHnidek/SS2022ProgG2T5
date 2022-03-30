@@ -48,13 +48,15 @@ public class AppTest {
 
         @BeforeAll
         public static void init() {
-            System.out.println("Started Testing " + ANSI_RED + "Exercise 1" + ANSI_RESET);
+            System.out.println("Started Testing " + ANSI_RED + "Exercise 1"
+                    + ANSI_RESET);
         }
         // Message before testing begins
 
         @AfterAll
         public static void finish() {
-            System.out.println("Finished Testing " + ANSI_RED + "Exercise 1" + ANSI_RESET);
+            System.out.println("Finished Testing " + ANSI_RED + "Exercise 1"
+                    + ANSI_RESET);
         }
         // Message after testing begins
 
@@ -89,9 +91,15 @@ public class AppTest {
             public void testSetArticles1() {
                 // Checks for modifier and return type
                 try {
-                    Method setArticles = AppController.class.getDeclaredMethod("setArticles", List.class);
-                    assertEquals("public", Modifier.toString(setArticles.getModifiers()), "setArticles");
-                    assertEquals("void", setArticles.getReturnType().toString());
+                    Method setArticles = AppController.class
+                            .getDeclaredMethod("setArticles", List.class);
+
+                    assertEquals("public", Modifier.toString(setArticles
+                            .getModifiers()), "Wrong access modifier");
+
+                    assertEquals("void", setArticles.getReturnType()
+                            .toString(), "Wrong return type");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -131,9 +139,15 @@ public class AppTest {
             public void testGetArticleCount1() {
                 // Checks for modifier and return type
                 try {
-                    Method getArticleCount = AppController.class.getDeclaredMethod("getArticleCount");
-                    assertEquals("public", Modifier.toString(getArticleCount.getModifiers()), "getArticleCount");
-                    assertEquals("int", getArticleCount.getReturnType().toString());
+                    Method getArticleCount = AppController.class
+                            .getDeclaredMethod("getArticleCount");
+
+                    assertEquals("public", Modifier.toString(getArticleCount
+                            .getModifiers()), "Wrong access modifier");
+
+                    assertEquals("int", getArticleCount.getReturnType()
+                            .toString(), "Wrong return type");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -163,12 +177,13 @@ public class AppTest {
                     AppController controller = new AppController();
 
                     controller.setArticles(articles);
-                    articles.add(new Article("Papa Putin", "Aide Ukraine"));
+                    articles.add(new Article("Mama", "Essen"));
                     articles.add(new Article("Jeff Bezos", "Nagelneuer Benzer"));
                     articles.add(new Article("Mama", "Mach Wäsche"));
 
                     assertEquals(articles.size(), controller.getArticleCount());
                     assertEquals(3, controller.getArticleCount());
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -198,9 +213,15 @@ public class AppTest {
             public void testGetTopHeadlinesAustria1() {
                 // Checks for modifier and return type
                 try {
-                    Method getArticleCount = AppController.class.getDeclaredMethod("getTopHeadlinesAustria");
-                    assertEquals("public", Modifier.toString(getArticleCount.getModifiers()), "getTopHeadlinesAustria");
-                    assertEquals("interface java.util.List", getArticleCount.getReturnType().toString());
+                    Method getArticleCount = AppController.class
+                            .getDeclaredMethod("getTopHeadlinesAustria");
+
+                    assertEquals("public", Modifier.toString(getArticleCount
+                            .getModifiers()), "Wrong access modifier");
+
+                    assertEquals("interface java.util.List", getArticleCount
+                            .getReturnType().toString(), "Wrong return type");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -212,7 +233,10 @@ public class AppTest {
             public void testGetTopHeadlinesAustria2() {
                 try {
                     AppController controller = new AppController();
-                    assertEquals(0, controller.getTopHeadlinesAustria().size());
+                    assertEquals(0,
+                            controller.getTopHeadlinesAustria().size(),
+                            "getTopHeadlinesAustria Method not properly coded");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -235,15 +259,34 @@ public class AppTest {
                     controller.setArticles(articles);
 
                     assertEquals(3, articles.size());
-                    assertEquals(articles.size(), controller.getTopHeadlinesAustria().size());
+
+                    assertEquals(articles.size(),
+                            controller.getTopHeadlinesAustria().size(),
+                            "getTopHeadlinesAustria Method not properly coded");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
                 }
             }
 
-            // insert more tests for getTopHeadlinesAustria here
+            @Test
+            @DisplayName("testGetTopHeadlinesAustria4 // Austria TOP Article not " +
+                    "null")
+            public void testGetTopHeadlinesAustria4() {
+                // Setting
+                try {
+                    AppController controller = new AppController();
+                    assertNotNull(controller.getTopHeadlinesAustria(),
+                            "getTopHeadlinesAustria Method was not properly " +
+                                    "coded");
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail("Ups something went terribly wrong here...");
+                }
+            }
+            // insert more tests for getTopHeadlinesAustria here
         }
 
         @DisplayName("Grouped tests for Method getAllNewsBitcoin")
@@ -268,9 +311,15 @@ public class AppTest {
             public void testGetAllNewsBitcoin1() {
                 // Checks for modifier and return type
                 try {
-                    Method getArticleCount = AppController.class.getDeclaredMethod("getAllNewsBitcoin");
-                    assertEquals("public", Modifier.toString(getArticleCount.getModifiers()), "getAllNewsBitcoin");
-                    assertEquals("interface java.util.List", getArticleCount.getReturnType().toString());
+                    Method getArticleCount = AppController.class
+                            .getDeclaredMethod("getAllNewsBitcoin");
+
+                    assertEquals("public", Modifier.toString(getArticleCount
+                            .getModifiers()), "Wrong access modifier");
+
+                    assertEquals("interface java.util.List", getArticleCount
+                            .getReturnType().toString(), "Wrong return type");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -315,6 +364,22 @@ public class AppTest {
                     fail("Ups something went terribly wrong here...");
                 }
             }
+
+            @Test
+            @DisplayName("testGetAllNewsBitcoin3 // Bitcoin Article not null")
+            public void testGetAllNewsBitcoin4() {
+                // Setting
+                try {
+                    AppController controller = new AppController();
+                    assertNotNull(controller.getAllNewsBitcoin(),
+                            "testGetAllNewsBitcoin Method was not properly " +
+                                    "coded");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fail("Ups something went terribly wrong here...");
+                }
+            }
         }
 
 
@@ -335,15 +400,23 @@ public class AppTest {
             }
             // Message after testing begins
 
-
             @Test
             @DisplayName("testFilterList1 // Modifier && Return type")
             public void testFilterList1() {
                 // Checks for modifier and return type
                 try {
-                    Method getArticleCount = AppController.class.getDeclaredMethod("filterList", String.class, List.class);
-                    assertEquals("protected static", Modifier.toString(getArticleCount.getModifiers()), "filterList");
-                    assertEquals("interface java.util.List", getArticleCount.getReturnType().toString());
+                    Method getArticleCount = AppController.class
+                            .getDeclaredMethod("filterList", String.class,
+                                    List.class);
+
+                    assertEquals("protected static", Modifier
+                            .toString(getArticleCount.getModifiers()),
+                            "Wrong access modifier");
+
+
+                    assertEquals("interface java.util.List", getArticleCount
+                            .getReturnType().toString(), "Wrong return type");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     fail("Ups something went terribly wrong here...");
@@ -363,7 +436,9 @@ public class AppTest {
                     articles.add(new Article("abc", "hallo"));
                     articles.add(new Article("abc", "nichtkrypto"));
 
-                    assertEquals(AppController.filterList("Co", articles).size(), 4);
+                    assertEquals(4,
+                            AppController.filterList("Co", articles).size(),
+                            "filterList was not properly coded");
 
                 } catch (Exception e) { // if function in progress fails
                     e.printStackTrace();
@@ -384,7 +459,9 @@ public class AppTest {
                     articles.add(new Article("abc", "hallo"));
                     articles.add(new Article("abc", "nichtkrypto"));
 
-                    assertEquals(AppController.filterList("x", articles).size(), 0);
+                    assertEquals(0,
+                            AppController.filterList("x", articles).size(),
+                            "filterList was not properly coded");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -392,7 +469,6 @@ public class AppTest {
                 }
             }
         }
-
     }
 }
 
