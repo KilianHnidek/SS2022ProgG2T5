@@ -22,11 +22,11 @@
             <VBox fx:id="vBoxArticlesRight" alignment="CENTER" prefWidth="210.0" />
          </children>
       </HBox>
-      <Label fx:id="topHeadlinesAustria" alignment="CENTER" layoutX="152.0" layoutY="218.0" onMouseClicked="#getTopHeadlinesAustria" onMouseEntered="#handleMouseEvent" onMouseExited="#handleMouseEvent" prefWidth="170.0" text="get top headlines austria" textAlignment="CENTER">
+      <Label fx:id="topHeadlinesAustria" alignment="CENTER" layoutX="152.0" layoutY="218.0" onMouseClicked="#getTopHeadlinesAustria" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get top headlines austria" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font></Label>
-      <Label fx:id="allNewsAboutBitcoin" alignment="CENTER" layoutX="152.0" layoutY="250.0" onMouseClicked="#getAllNewsAboutBitcoin" onMouseEntered="#handleMouseEvent" onMouseExited="#handleMouseEvent" prefWidth="170.0" text="get all news about bitcoin" textAlignment="CENTER">
+      <Label fx:id="allNewsAboutBitcoin" alignment="CENTER" layoutX="152.0" layoutY="250.0" onMouseClicked="#getAllNewsAboutBitcoin" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get all news about bitcoin" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font>
@@ -36,7 +36,7 @@
             <Font name="Times New Roman" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="quitProgram" alignment="CENTER" layoutX="152.0" layoutY="306.0" onMouseClicked="#quitProgram" onMouseEntered="#handleMouseEvent" onMouseExited="#handleMouseEvent" prefWidth="170.0" text="quit program" textAlignment="CENTER">
+      <Label fx:id="quitProgram" alignment="CENTER" layoutX="152.0" layoutY="306.0" onMouseClicked="#quitProgram" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="quit program" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font>

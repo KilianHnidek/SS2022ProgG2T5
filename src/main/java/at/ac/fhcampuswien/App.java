@@ -16,13 +16,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                .getResource("menu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/icon.png"))));
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("assets/icon.png"))));
 
         scene.setFill(Color.TRANSPARENT);
+        // background-less
         stage.initStyle(StageStyle.TRANSPARENT);
+        // border-less
 
         stage.setResizable(false);
         stage.setScene(scene);
@@ -34,10 +38,3 @@ public class App extends Application {
         launch();
     }
 }
-
-/**
- * todo:
- * zurück-btn
- * article-count
- * quit-btn
- */
