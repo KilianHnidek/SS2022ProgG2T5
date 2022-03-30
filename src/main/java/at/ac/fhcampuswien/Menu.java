@@ -7,12 +7,13 @@ public class Menu {
     private AppController controller;
     private final static String INVALID_INPUT_MESSAGE = "Invalid input!";
     private final static String EXIT_MESSAGE = "Bye bye!";
+    private Boolean bo = true;
 
     public void start(){
+        Scanner scanner = new Scanner(System.in);
         controller = new AppController();
-        while (true) {
+        while (bo) {
             printMenu();
-            Scanner scanner = new Scanner(System.in);
             String input = scanner.next();
             handleInput(input);
         }
@@ -20,22 +21,15 @@ public class Menu {
 
     private void handleInput(String input) {
         switch (input) {
-            case ("a"):
-                getTopHeadlinesAustria(controller);
-                break;
-            case ("b"):
-                getAllNewsBitcoin(controller);
-                break;
-            case ("y"):
-                getArticleCount(controller);
-                break;
-            case ("q"):
+            case ("a") -> getTopHeadlinesAustria(controller);
+            case ("b") -> getAllNewsBitcoin(controller);
+            case ("y") -> getArticleCount(controller);
+            case ("q") -> {
+                bo = false;
                 printExitMessage();
                 System.exit(0);
-                break;
-            default:
-                Menu.printInvalidInputMessage();
-                start();
+            }
+            default -> Menu.printInvalidInputMessage();
         }
     }
 
@@ -45,7 +39,7 @@ public class Menu {
 
     private void getTopHeadlinesAustria(AppController ctrl){
         List<Article> articles = ctrl.getTopHeadlinesAustria();
-        if (articles.size() <= 0) {
+        if (articles.size() == 0) {
             System.out.println("No article listed under this category");
         } else {
             System.out.print("[");
@@ -61,7 +55,7 @@ public class Menu {
 
     private void getAllNewsBitcoin(AppController ctrl) {
         List<Article> articles = ctrl.getAllNewsBitcoin();
-        if (articles.size() <= 0) {
+        if (articles.size() == 0) {
             System.out.println("No article listed under this category");
         } else {
             System.out.print("[");
@@ -97,6 +91,13 @@ public class Menu {
 
                 );
     }
+
+    /*
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.start();
+    }
+     */
 }
 
 

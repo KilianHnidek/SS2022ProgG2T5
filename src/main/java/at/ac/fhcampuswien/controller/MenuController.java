@@ -221,7 +221,6 @@ public class MenuController {
         }
     }
 
-
     void reloadMenu() {
         for (int i = vBoxArticlesLeft.getChildren().size() - 1; i >= 0; i--) {
             Node g = vBoxArticlesLeft.getChildren().get(i);

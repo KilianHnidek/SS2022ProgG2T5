@@ -11,7 +11,7 @@ public class AppController {
     }
 
     /**
-     * ! VON HIER
+     * Start of testing
      */
 
     public void setArticles(List<Article> articles) {
@@ -27,10 +27,13 @@ public class AppController {
     }
 
     public List<Article> getAllNewsBitcoin() {
-        return articles != null ? filterList("bitcoin", articles) : new ArrayList<>();
+        return articles != null ? filterList("bitcoin", articles) :
+                new ArrayList<>();
     }
 
-    protected static List<Article> filterList(String query, List<Article> articles) {
+    protected static List<Article> filterList(String query,
+                                              List<Article> articles) {
+
         List<Article> res_articles = new ArrayList<>();
 
         for (Article a : articles) {
@@ -42,7 +45,7 @@ public class AppController {
     }
 
     /**
-     * ! BIS HIER
+     * End of testing
      */
 
     public static List<Article> generateMockList() {
@@ -54,7 +57,7 @@ public class AppController {
         articles.add(new Article("abc", "BiTcOiN"));
         articles.add(new Article("abc", "gibMalBitcoinHallo"));
         articles.add(new Article("abc", "hallo"));
-        articles.add(new Article("abc", "nichtCrypto"));
+        articles.add(new Article("abc", "notCrypto"));
 
         articles.add(new Article("George Orwell", "21984"));
         articles.add(new Article("hallo", "2BItcOin"));
