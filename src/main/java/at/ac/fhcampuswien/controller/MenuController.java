@@ -170,7 +170,7 @@ public class MenuController {
     @FXML
     void getArticleCount(MouseEvent event) {
         ctrl.getArticleCount();
-        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? ctrl.getArticleCount() + "" : "count Articles");
+        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? ctrl.getArticleCount() + "" : "count articles");
 
         // was für ein Count wollen wir?
     }
