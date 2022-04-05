@@ -4,6 +4,7 @@ import at.ac.fhcampuswien.AppController;
 import at.ac.fhcampuswien.Article;
 import at.ac.fhcampuswien.NewsApi;
 import at.ac.fhcampuswien.enums.CategoryEnum;
+import at.ac.fhcampuswien.enums.CountryEnum;
 import at.ac.fhcampuswien.enums.EndpointEnum;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -36,11 +37,10 @@ public class MenuController {
     @FXML
     private ImageView pageFliphilip, pageFlifilipe;
     @FXML
-    private final Label
-            allNewsAboutBitcoin = new Label(),
-            countArticles = new Label(),
-            quitProgram = new Label(),
-            topHeadlinesAustria = new Label();
+    private Label allNewsAboutBitcoin,
+            countArticles,
+            quitProgram,
+            topHeadlinesAustria;
 
 
     /**
@@ -51,6 +51,7 @@ public class MenuController {
     void getTopHeadlinesAustria(MouseEvent event) throws IOException {
         NewsApi.query = "corona";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.at;
         chooseNews(ctrl.getTopHeadlinesAustria());
     }
 
@@ -58,6 +59,7 @@ public class MenuController {
     void getAllNewsAboutBitcoin(MouseEvent event) throws IOException {
         NewsApi.query = "bitcoin";
         NewsApi.endpointEnum = EndpointEnum.everything;
+        NewsApi.countryEnum = null;
         chooseNews(ctrl.getAllNewsBitcoin());
     }
 
@@ -174,16 +176,17 @@ public class MenuController {
     void reloadMenu() {
         for (int i = vBoxArticlesLeft.getChildren().size() - 1; i >= 0; i--) {
             Node g = vBoxArticlesLeft.getChildren().get(i);
-            if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
+            //if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
                 vBoxArticlesLeft.getChildren().remove(g);
-            }
+            //}
         }
         for (int i = vBoxArticlesRight.getChildren().size() - 1; i >= 0; i--) {
             Node g = vBoxArticlesRight.getChildren().get(i);
-            if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
+            //if (g.getClass().getSimpleName().equals("Label") && g != allNewsAboutBitcoin && g != countArticles && g != quitProgram && g != topHeadlinesAustria) {
                 vBoxArticlesRight.getChildren().remove(g);
-            }
+            //}
         }
+
         pageFlifilipe.setDisable(true);
         pageFliphilip.setDisable(true);
         pageFlifilipe.setVisible(false);

@@ -38,6 +38,7 @@ public class AppController {
     public List<Article> getAllNewsBitcoin() throws IOException {
         NewsResponse newsResponse = NewsApi.run();
         MenuController.labelArticleCount = newsResponse.getArticles().size();
+        //MenuController.labelArticleCount = newsResponse.getTotalResults();
         return newsResponse.getArticles() != null ?  newsResponse.getArticles() : new ArrayList<>();
     }
 
