@@ -3,6 +3,7 @@ package at.ac.fhcampuswien;
 import java.io.IOException;
 
 import at.ac.fhcampuswien.enums.CountryEnum;
+import at.ac.fhcampuswien.enums.SortByEnum;
 import com.google.gson.Gson;
 
 import at.ac.fhcampuswien.enums.CategoryEnum;
@@ -13,22 +14,30 @@ import okhttp3.*;
 public class NewsApi {
 
     private static final String API_KEY = "dc31e44d4d4e4653aad6d93b182e981e";
-    private static OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = new OkHttpClient();
 
     public final static String url = "https://newsapi.org/";
 
     public static EndpointEnum endpointEnum;
-    public static CategoryEnum categoryEnum;
+    //public static CategoryEnum categoryEnum;
     public static CountryEnum countryEnum;
+    public static SortByEnum sortByEnum;
+    public static String query;
+
 
     static NewsResponse run() throws IOException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addPathSegment("v2");
 
-        urlBuilder.addPathSegment(EndpointEnum.everything.toString());
-        urlBuilder.addQueryParameter("q", CategoryEnum.bitcoin.toString());
+        urlBuilder.addPathSegment(endpointEnum.getName());
+
+        urlBuilder.addQueryParameter("q", query);
+
         urlBuilder.addQueryParameter("apiKey", API_KEY);
 
+        if (sortByEnum != null) {
+            urlBuilder.addQueryParameter("sortBy", sortByEnum.toString());
+        }
 
         if (countryEnum != null) {
             urlBuilder.addQueryParameter("country", countryEnum.toString());
@@ -48,8 +57,7 @@ public class NewsApi {
 
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             else {
-                NewsResponse newsResponse = gson.fromJson(response.body().string(), NewsResponse.class);
-                return newsResponse;
+                return gson.fromJson(response.body().string(), NewsResponse.class);
 
                 /*
 
@@ -82,7 +90,7 @@ public class NewsApi {
 
         }
     }
-
+/*
     public static void main(String[] args) throws IOException {
         NewsApi newsApi = new NewsApi();
         NewsResponse response = newsApi.run();
@@ -91,5 +99,6 @@ public class NewsApi {
             System.out.println(a);
         }
     }
+ */
 }
 

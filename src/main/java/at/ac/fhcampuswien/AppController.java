@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import at.ac.fhcampuswien.controller.MenuController;
 import at.ac.fhcampuswien.enums.CategoryEnum;
 import at.ac.fhcampuswien.enums.CountryEnum;
 import at.ac.fhcampuswien.enums.EndpointEnum;
@@ -10,6 +11,7 @@ import java.util.*;
 public class AppController {
     
     private List<Article> articles;
+
 
     public AppController() {
         articles = generateMockList();
@@ -28,25 +30,15 @@ public class AppController {
     }
 
     public List<Article> getTopHeadlinesAustria() throws IOException {
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.categoryEnum = CategoryEnum.business;
-        NewsApi.countryEnum = CountryEnum.at;
-
         NewsResponse newsResponse = NewsApi.run();
-
+        MenuController.labelArticleCount = newsResponse.getArticles().size();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
-        //return articles != null ? articles : new ArrayList<>();
     }
 
     public List<Article> getAllNewsBitcoin() throws IOException {
-        NewsApi.endpointEnum = EndpointEnum.everything;
-        NewsApi.categoryEnum = CategoryEnum.general;
-        NewsApi.countryEnum = null;
-
         NewsResponse newsResponse = NewsApi.run();
-
-        return newsResponse.getArticles() != null ? filterList("bitcoin", newsResponse.getArticles()) : new ArrayList<>();
-        //return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+        MenuController.labelArticleCount = newsResponse.getArticles().size();
+        return newsResponse.getArticles() != null ?  newsResponse.getArticles() : new ArrayList<>();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {
