@@ -13,16 +13,23 @@ import java.util.Objects;
 
 public class App extends Application {
 
+    public static Stage stage;
+    public static Scene scene;
+    public static double mouseX;
+
     @Override
     public void start(Stage stage) throws IOException {
 
+        App.stage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        scene = new Scene(fxmlLoader.load());
 
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/icon.png"))));
 
+        // background-less
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
+        // border-less
 
         stage.setResizable(false);
         stage.setScene(scene);

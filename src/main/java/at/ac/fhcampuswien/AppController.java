@@ -1,9 +1,6 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.controller.MenuController;
-import at.ac.fhcampuswien.enums.CategoryEnum;
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
 
 import java.io.IOException;
 import java.util.*;
