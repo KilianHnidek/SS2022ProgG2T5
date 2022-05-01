@@ -1,7 +1,5 @@
 package at.ac.fhcampuswien;
 
-import at.ac.fhcampuswien.Article;
-
 import java.util.List;
 
 public class NewsResponse {

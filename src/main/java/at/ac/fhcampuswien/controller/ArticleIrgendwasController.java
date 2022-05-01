@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class ArticleIrgendwasController {
-
     private final AppController ctrl = new AppController();
     private int pageNumber = 1;
     private int articleIndex;
@@ -32,17 +31,17 @@ public class ArticleIrgendwasController {
     private ImageView pageFliphilip, pageFlifilipe;
 
     @FXML
-    void handleMousePressed(MouseEvent event) {
+    private void handleMousePressed(MouseEvent event) {
         App.mouseX = event.getSceneX();
     }
 
     @FXML
-    void handleMouseDragged(MouseEvent event) {
+    private void handleMouseDragged(MouseEvent event) {
         randomMethods.handleMouseDragged(event, emptyPane);
     }
 
     @FXML
-    void handlePhilipTouched(MouseEvent event) throws IOException {
+    private void handlePhilipTouched(MouseEvent event) throws IOException {
         // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
@@ -56,7 +55,7 @@ public class ArticleIrgendwasController {
     }
 
     @FXML
-    void handleFilipeTouched(MouseEvent event) throws IOException {
+    private void handleFilipeTouched(MouseEvent event) throws IOException {
         // left
         pageNumber--;
         articleIndex -= 6;
@@ -72,10 +71,7 @@ public class ArticleIrgendwasController {
         }
     }
 
-    void chooseNews (List<Article> articles) {
-
-
-
+    public void chooseNews (List<Article> articles) {
         if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
@@ -132,8 +128,7 @@ public class ArticleIrgendwasController {
         }
     }
 
-    void reloadMenu() throws IOException {
-
+    private void reloadMenu() throws IOException {
         pageNumber = 1;
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menu.fxml"));

@@ -4,7 +4,6 @@ module at.ac.fhcampuswien {
     requires okhttp3;
     requires com.google.gson;
 
-
     opens at.ac.fhcampuswien to javafx.fxml, com.google.gson;
     exports at.ac.fhcampuswien;
     exports at.ac.fhcampuswien.controller;
