@@ -24,7 +24,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
         scene = new Scene(fxmlLoader.load());
 
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/icon.png"))));
+        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("assets/newsdingsta.png"))));
 
         // background-less
         scene.setFill(Color.TRANSPARENT);

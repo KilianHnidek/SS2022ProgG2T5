@@ -49,7 +49,14 @@ public class NewsApi {
             Gson gson = new Gson();
 
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                switch (response.code()) {
+                    case 400 -> throw new NewsApiException("400 - Bad Request. The request was unacceptable, often due to a missing or misconfigured parameter.");
+                    case 401 -> throw new NewsApiException("401 - Unauthorized. Your API key was missing from the request, or wasn't correct.");
+                    case 429 -> throw new NewsApiException("429 - Too Many Requests. You made too many requests within a window of time and have been rate limited. Back off for a while.");
+                    case 500 -> throw new NewsApiException("500 - Server Error. Something went wrong on our side.");
+                }
+                // default ????
+                throw new NewsApiException("");
             } else {
                 return gson.fromJson(response.body().string(), NewsResponse.class);
 
@@ -72,11 +79,9 @@ public class NewsApi {
                     unexpectedError - This shouldn't happen, and if it does then it's our fault, not yours. Try the request again shortly.
                  */
             }
-        } catch (UnknownHostException e) {
-            throw new NewsApiException("host can not be reached, check ur wifi");
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new NewsApiException("ka bro iwas maya");
+            // wifi connection
+            throw new NewsApiException("something went wrong");
         }
     }
 /*
