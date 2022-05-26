@@ -9,7 +9,7 @@ public class Menu {
     private final static String INVALID_INPUT_MESSAGE = "Invalid input!";
     private final static String EXIT_MESSAGE = "Bye bye!";
 
-    public void start() throws IOException {
+    public void start() throws NewsApiException, IOException {
         controller = new AppController();
         while (true) {
             printMenu();
@@ -19,7 +19,7 @@ public class Menu {
         }
     }
 
-    private void handleInput(String input) throws IOException {
+    private void handleInput(String input) throws NewsApiException, IOException {
         switch (input) {
             case ("a"):
                 getTopHeadlinesAustria(controller);
@@ -44,7 +44,7 @@ public class Menu {
         System.out.println("Number of articles: " + ctrl.getArticleCount());
     }
 
-    private void getTopHeadlinesAustria(AppController ctrl) throws IOException {
+    private void getTopHeadlinesAustria(AppController ctrl) throws NewsApiException {
         List<Article> articles = ctrl.getTopHeadlinesAustria();
         if (articles.size() <= 0) {
             System.out.println("No article listed under this category");
@@ -60,7 +60,7 @@ public class Menu {
         }
     }
 
-    private void getAllNewsBitcoin(AppController ctrl) throws IOException {
+    private void getAllNewsBitcoin(AppController ctrl) throws NewsApiException {
         List<Article> articles = ctrl.getAllNewsBitcoin();
         if (articles.size() <= 0) {
             System.out.println("No article listed under this category");

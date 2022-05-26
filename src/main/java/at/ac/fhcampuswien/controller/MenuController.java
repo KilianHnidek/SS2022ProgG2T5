@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.controller;
 import at.ac.fhcampuswien.App;
 import at.ac.fhcampuswien.AppController;
 import at.ac.fhcampuswien.NewsApi;
+import at.ac.fhcampuswien.NewsApiException;
 import at.ac.fhcampuswien.enums.CountryEnum;
 import at.ac.fhcampuswien.enums.EndpointEnum;
 import javafx.animation.KeyFrame;
@@ -12,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,15 +42,42 @@ public class MenuController {
      */
 
     @FXML
-    private void getTopHeadlinesAustria(MouseEvent event) throws IOException {
+    private void getTopHeadlinesAustria(MouseEvent event) {
         NewsApi.query = "corona";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
 
-        waitingPopUp(event);
+        try {
+            waitingPopUp(event);
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void waitingPopUp(MouseEvent event) throws IOException {
+    @FXML
+    private void getAllNewsBitcoin(MouseEvent event) {
+        NewsApi.query = "bitcoin";
+        NewsApi.endpointEnum = EndpointEnum.everything;
+        NewsApi.countryEnum = null;
+
+        try {
+            waitingPopUp(event);
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void waitingPopUp(MouseEvent event) throws IOException, NewsApiException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
         Scene popUpScene = new Scene(fxmlLoader.load());
         ArticleIrgendwasController controller = fxmlLoader.getController();
@@ -80,15 +109,6 @@ public class MenuController {
             App.stage.setScene(popUpScene);
             popUpWindow.close();
         })).play();
-    }
-
-    @FXML
-    private void getAllNewsBitcoin(MouseEvent event) throws IOException {
-        NewsApi.query = "bitcoin";
-        NewsApi.endpointEnum = EndpointEnum.everything;
-        NewsApi.countryEnum = null;
-
-        waitingPopUp(event);
     }
 
     @FXML

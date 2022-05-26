@@ -41,7 +41,7 @@ public class ArticleIrgendwasController {
     }
 
     @FXML
-    private void handlePhilipTouched(MouseEvent event) throws IOException {
+    private void handlePhilipTouched(MouseEvent event) throws NewsApiException {
         // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
@@ -55,7 +55,7 @@ public class ArticleIrgendwasController {
     }
 
     @FXML
-    private void handleFilipeTouched(MouseEvent event) throws IOException {
+    private void handleFilipeTouched(MouseEvent event) throws IOException, NewsApiException {
         // left
         pageNumber--;
         articleIndex -= 6;

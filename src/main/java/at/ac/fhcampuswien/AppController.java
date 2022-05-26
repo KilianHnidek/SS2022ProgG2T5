@@ -3,10 +3,11 @@ package at.ac.fhcampuswien;
 import at.ac.fhcampuswien.controller.MenuController;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class AppController {
-    
+
     private List<Article> articles;
 
 
@@ -26,17 +27,17 @@ public class AppController {
         return articles != null ? articles.size() : 0;
     }
 
-    public List<Article> getTopHeadlinesAustria() throws IOException {
+    public List<Article> getTopHeadlinesAustria() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
         MenuController.labelArticleCount = newsResponse.getArticles().size();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
 
-    public List<Article> getAllNewsBitcoin() throws IOException {
+    public List<Article> getAllNewsBitcoin() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
         MenuController.labelArticleCount = newsResponse.getArticles().size();
         //MenuController.labelArticleCount = newsResponse.getTotalResults();
-        return newsResponse.getArticles() != null ?  newsResponse.getArticles() : new ArrayList<>();
+        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {

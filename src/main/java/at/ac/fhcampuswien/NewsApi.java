@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import at.ac.fhcampuswien.enums.*;
 import com.google.gson.Gson;
@@ -18,8 +19,9 @@ public class NewsApi {
     public static CountryEnum countryEnum;
     public static SortByEnum sortByEnum;
     public static String query;
+    private static Response response;
 
-    static NewsResponse run() throws IOException {
+    static NewsResponse run() throws NewsApiException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
 
         urlBuilder.addPathSegment("v2");
@@ -42,13 +44,13 @@ public class NewsApi {
                 .url(urlBuilder.build().toString())
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
+        try {
+            Response response = client.newCall(request).execute();
             Gson gson = new Gson();
 
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             } else {
-                //System.out.println(response.body().string());
                 return gson.fromJson(response.body().string(), NewsResponse.class);
 
                 /*
@@ -70,6 +72,11 @@ public class NewsApi {
                     unexpectedError - This shouldn't happen, and if it does then it's our fault, not yours. Try the request again shortly.
                  */
             }
+        } catch (UnknownHostException e) {
+            throw new NewsApiException("host can not be reached, check ur wifi");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new NewsApiException("ka bro iwas maya");
         }
     }
 /*
