@@ -42,13 +42,6 @@ public class App extends Application {
 }
 
 
-
-
-
-
-
-
-
 /*package at.ac.fhcampuswien;
 
 public class App {
