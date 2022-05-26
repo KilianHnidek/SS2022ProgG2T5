@@ -2,10 +2,10 @@ package at.ac.fhcampuswien;
 
 public class Article {
     class Source {
-        private int id;
+        private String id;
         private String name;
 
-        public Source (int id, String name){
+        public Source (String id, String name){
             this.id = id;
             this.name = name;
         }

@@ -48,6 +48,7 @@ public class NewsApi {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             } else {
+                //System.out.println(response.body().string());
                 return gson.fromJson(response.body().string(), NewsResponse.class);
 
                 /*
