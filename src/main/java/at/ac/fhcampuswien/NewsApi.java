@@ -45,8 +45,9 @@ public class NewsApi {
         try (Response response = client.newCall(request).execute()) {
             Gson gson = new Gson();
 
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            else {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            } else {
                 return gson.fromJson(response.body().string(), NewsResponse.class);
 
                 /*

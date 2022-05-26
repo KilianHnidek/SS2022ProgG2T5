@@ -1,7 +1,17 @@
 package at.ac.fhcampuswien;
 
 public class Article {
+    class Source {
+        private int id;
+        private String name;
 
+        public Source (int id, String name){
+            this.id = id;
+            this.name = name;
+        }
+    }
+
+    private Source source;
     private String author, title, description, url, urlToImage, publishedAt, content;
 
     public Article(String author, String title) {
@@ -9,7 +19,8 @@ public class Article {
         this.setTitle(title);
     }
 
-    public Article(String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+    public Article(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+        this.source = source;
         this.author = author;
         this.title = title;
         this.description = description;
