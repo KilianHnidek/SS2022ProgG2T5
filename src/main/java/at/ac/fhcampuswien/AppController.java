@@ -7,12 +7,10 @@ import java.net.UnknownHostException;
 import java.util.*;
 
 public class AppController {
-
     private List<Article> articles;
 
-
     public AppController() {
-        articles = generateMockList();
+        //articles = generateMockList();
     }
 
     /**
@@ -38,14 +36,17 @@ public class AppController {
         MenuController.labelArticleCount = newsResponse.getArticles().size();
         //MenuController.labelArticleCount = newsResponse.getTotalResults();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+
+        //articles = newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+        //return articles;
     }
 
     public static List<Article> getArticles() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
+
+        MenuController.labelArticleCount = newsResponse.getArticles().size();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
-
-
 
     protected static List<Article> filterList(String query, List<Article> articles) {
         List<Article> res_articles = new ArrayList<>();

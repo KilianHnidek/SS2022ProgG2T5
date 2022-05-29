@@ -178,7 +178,7 @@ public class ArticleIrgendwasController {
                 }
 
                 int finalK = k;
-                l1.setOnMouseClicked(e -> {
+                l1.setOnMouseClicked(ev -> {
                     try {
                         articles.get(finalK).downloadArticle();
                     } catch (MalformedURLException e) {

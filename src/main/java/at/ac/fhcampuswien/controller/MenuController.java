@@ -1,23 +1,21 @@
 package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.*;
-import at.ac.fhcampuswien.enums.*;
+import at.ac.fhcampuswien.enums.CountryEnum;
+import at.ac.fhcampuswien.enums.EndpointEnum;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -28,24 +26,24 @@ import java.util.stream.Stream;
 public class MenuController {
     private final AppController ctrl = new AppController();
     public static int labelArticleCount = 0;
-    private Stage popUpWindow = new Stage();
+    //private Stage popUpWindow = new Stage();
 
     @FXML
     private Pane emptyPane;
     @FXML
     private ImageView waitingGif;
     @FXML
-    private Label filter1, filter2, filter3, filter4;
+    private Label filter1, filter2, filter3, countArticles;
 
-    private static String filter1Text, filter2Text, filter3Text;
+    private static String filter1Text, filter2Text, filter3Text, countArticlesText;
 
     @FXML
     public void initialize() {
         filter1Text = filter1.getText();
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
+        countArticlesText = countArticles.getText();
     }
-
 
     /*
      * GUI functions
@@ -53,8 +51,6 @@ public class MenuController {
 
     @FXML
     void toggleProviderWithMostArticles(MouseEvent event) {
-        //handleLabelsMouseHovered(event);    //underlines label
-
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
@@ -75,7 +71,7 @@ public class MenuController {
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
-            //setcontent? settext?
+            //setContent? setText?
             a.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,8 +80,6 @@ public class MenuController {
 
     @FXML
     void toggleAuthorWithLongestName(MouseEvent event) {
-        //handleLabelsMouseHovered(event);    //underlines label
-
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
@@ -104,8 +98,6 @@ public class MenuController {
 
             String new_text = streamFromList.map(Article::getAuthor).filter(Objects::nonNull).max(Comparator.comparingInt(String::length)).get();
             filter2.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter2Text);
-
-
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -118,11 +110,8 @@ public class MenuController {
 
     @FXML
     void toggleNewYorkTimesArticleCount(MouseEvent event) {
-
-        //handleLabelsMouseHovered(event);    //underlines label
-
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.endpointEnum = EndpointEnum.everything;
         NewsApi.countryEnum = CountryEnum.us;
 
         try {
@@ -136,6 +125,8 @@ public class MenuController {
             */
 
             String new_text = String.valueOf(streamFromList.map(Article::getSourceName).filter(s -> s.equals("New York Times")).count());
+            //String new_text = "" + streamFromList.filter(a -> a.getSourceName().equals("New York Times")).count();
+
             filter3.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter3Text);
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -148,7 +139,9 @@ public class MenuController {
     }
 
     @FXML
-    private void showArticlesWithLongHeadlines(MouseEvent event) {
+    private void showArticlesWithShortHeadlines() {
+        waitingGif.setVisible(true);
+
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
@@ -168,74 +161,88 @@ public class MenuController {
                             ).findFirst().get()
                     ));
 
-            System.out.println(all_articles);
+            //System.out.println(all_articles);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
+            showArticleScene(res_articles);
+
+            /*FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
             Scene articleScene = new Scene(fxmlLoader.load());
             ArticleIrgendwasController controller = fxmlLoader.getController();
 
             controller.chooseNews(res_articles);
 
             articleScene.setFill(Color.TRANSPARENT);
-            App.stage.setScene(articleScene);
+            App.stage.setScene(articleScene);*/
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 
     @FXML
-    private void getTopHeadlinesAustria(MouseEvent event) {
+    private void getTopHeadlinesAustria() {
+        waitingGif.setVisible(true);
+
         NewsApi.query = "corona";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
 
         try {
-            waitingPopUp(event);
+            showArticleScene(ctrl.getTopHeadlinesAustria());
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 
     @FXML
-    private void getAllNewsBitcoin(MouseEvent event) {
+    private void getAllNewsBitcoin() {
+        waitingGif.setVisible(true);
+
         NewsApi.query = "bitcoin";
         NewsApi.endpointEnum = EndpointEnum.everything;
         NewsApi.countryEnum = null;
 
         try {
-            waitingPopUp(event);
+            showArticleScene(ctrl.getAllNewsBitcoin());
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 
-    private void waitingPopUp(MouseEvent event) throws IOException, NewsApiException {
+    private void showArticleScene(List<Article> articles) throws IOException, NewsApiException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
-        Scene popUpScene = new Scene(fxmlLoader.load());
+        Scene articleScene = new Scene(fxmlLoader.load());
         ArticleIrgendwasController controller = fxmlLoader.getController();
 
-        if (NewsApi.query.equals("bitcoin")) {
-            controller.chooseNews(ctrl.getAllNewsBitcoin());
-        } else {
-            controller.chooseNews(ctrl.getTopHeadlinesAustria());
-        }
+        controller.chooseNews(articles);
 
-        double posX = App.stage.getX() + App.stage.getWidth() / 2 - 32;
+        /*double posX = App.stage.getX() + App.stage.getWidth() / 2 - 32;
         double posY = App.stage.getY() + App.stage.getHeight() / 2 - 32;
 
         ImageView waitingGif = new ImageView(new Image(Objects.requireNonNull(App.class.getResourceAsStream("assets/waiting.gif"))));
@@ -249,18 +256,15 @@ public class MenuController {
         popUpWindow.initStyle(StageStyle.TRANSPARENT);
         popUpWindow.setScene(new Scene(new Group(waitingGif), 64, 64));
         popUpWindow.getScene().setFill(Color.TRANSPARENT);
-        popUpWindow.show();
+        popUpWindow.show();*/
+        articleScene.setFill(Color.TRANSPARENT);
 
-        new Timeline(new KeyFrame(Duration.seconds(2), e -> {
-            popUpScene.setFill(Color.TRANSPARENT);
-            App.stage.setScene(popUpScene);
-            popUpWindow.close();
-        })).play();
+        new Timeline(new KeyFrame(Duration.seconds(1), e -> App.stage.setScene(articleScene))).play();
     }
 
     @FXML
     private void getArticleCount(MouseEvent event) {
-        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? labelArticleCount + "" : "count Articles");
+        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? labelArticleCount + "" : countArticlesText);
     }
 
     @FXML
