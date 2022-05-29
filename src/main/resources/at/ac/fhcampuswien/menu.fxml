@@ -52,7 +52,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="filter4" layoutX="26.0" layoutY="425.0" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" onMouseClicked="#showArticlesWithLongHeadlines" prefHeight="19.0" prefWidth="193.0" text="Articles with headline &lt; 15 chars">
+      <Label fx:id="filter4" layoutX="26.0" layoutY="425.0" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" onMouseClicked="#showArticlesWithShortHeadlines" prefHeight="19.0" prefWidth="193.0" text="Articles with headline &lt; 15 chars">
          <font>
             <Font size="14.0" />
          </font>
