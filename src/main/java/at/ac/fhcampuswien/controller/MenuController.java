@@ -33,15 +33,16 @@ public class MenuController {
     @FXML
     private ImageView waitingGif;
     @FXML
-    private Label filter1, filter2, filter3;
+    private Label filter1, filter2, filter3, countArticles;
 
-    private static String filter1Text, filter2Text, filter3Text;
+    private static String filter1Text, filter2Text, filter3Text, countArticlesText;
 
     @FXML
     public void initialize() {
         filter1Text = filter1.getText();
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
+        countArticlesText = countArticles.getText();
         labelArticleCount = 0;
     }
 
@@ -142,7 +143,7 @@ public class MenuController {
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = null;
+        NewsApi.countryEnum = CountryEnum.;
 
         try {
             List<Article> all_articles = AppController.getArticles();
@@ -262,7 +263,7 @@ public class MenuController {
 
     @FXML
     private void getArticleCount(MouseEvent event) {
-        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? labelArticleCount + "" : "count articles");
+        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? labelArticleCount + "" : countArticlesText);
     }
 
     @FXML

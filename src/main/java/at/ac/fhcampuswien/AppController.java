@@ -34,12 +34,18 @@ public class AppController {
     public List<Article> getAllNewsBitcoin() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
         MenuController.labelArticleCount = newsResponse.getArticles().size();
+
         //MenuController.labelArticleCount = newsResponse.getTotalResults();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+
+        //articles = newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+        //return articles;
     }
 
     public static List<Article> getArticles() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
+
+        MenuController.labelArticleCount = newsResponse.getArticles().size();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
 
