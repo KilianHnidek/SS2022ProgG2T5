@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 public class MenuController {
     private final AppController ctrl = new AppController();
-    public static int labelArticleCount = 0;
+    public static int labelArticleCount;
     //private Stage popUpWindow = new Stage();
 
     @FXML
@@ -42,6 +42,7 @@ public class MenuController {
         filter1Text = filter1.getText();
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
+        labelArticleCount = 0;
     }
 
     /*
@@ -60,7 +61,7 @@ public class MenuController {
             Map<String, Long> map = streamFromList.collect(Collectors.groupingBy(Article::getSourceName, Collectors.counting()));
 
             //befehl in entry variable speichern und damit arbeiten statt in string und long
-            String name = map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+            String name = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
             Long amount = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
 
             //filter1.setText(name + " has " + amount + " article(s)");
@@ -70,7 +71,7 @@ public class MenuController {
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
-            //setcontent? settext?
+            //setContent? setText?
             a.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +142,7 @@ public class MenuController {
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
+        NewsApi.countryEnum = null;
 
         try {
             List<Article> all_articles = AppController.getArticles();
@@ -175,13 +176,17 @@ public class MenuController {
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 
     @FXML
-    private void getTopHeadlinesAustria(MouseEvent event) {
+    private void getTopHeadlinesAustria() {
         waitingGif.setVisible(true);
 
         NewsApi.query = "corona";
@@ -195,13 +200,17 @@ public class MenuController {
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 
     @FXML
-    private void getAllNewsBitcoin(MouseEvent event) {
+    private void getAllNewsBitcoin() {
         waitingGif.setVisible(true);
 
         NewsApi.query = "bitcoin";
@@ -215,8 +224,12 @@ public class MenuController {
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
+
+            waitingGif.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
+
+            waitingGif.setVisible(false);
         }
     }
 

@@ -7,12 +7,10 @@ import java.net.UnknownHostException;
 import java.util.*;
 
 public class AppController {
-
     private List<Article> articles;
 
-
     public AppController() {
-        articles = generateMockList();
+        //articles = generateMockList();
     }
 
     /**
@@ -44,8 +42,6 @@ public class AppController {
         NewsResponse newsResponse = NewsApi.run();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
-
-
 
     protected static List<Article> filterList(String query, List<Article> articles) {
         List<Article> res_articles = new ArrayList<>();

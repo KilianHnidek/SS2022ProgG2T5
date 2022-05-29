@@ -5,7 +5,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,8 +28,8 @@ public class Article {
     private String author, title, description, url, urlToImage, publishedAt, content;
 
     public Article(String author, String title) {
-        this.setAuthor(author);
-        this.setTitle(title);
+        this.author = author;
+        this.title = title;
     }
 
     public Article(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
@@ -42,14 +41,6 @@ public class Article {
         this.urlToImage = urlToImage;
         this.publishedAt = publishedAt;
         this.content = content;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {
