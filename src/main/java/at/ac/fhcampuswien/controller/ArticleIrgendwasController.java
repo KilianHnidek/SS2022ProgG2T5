@@ -178,6 +178,10 @@ public class ArticleIrgendwasController {
                     vBoxArticlesRight.getChildren().add(l1);
                     vBoxArticlesRight.getChildren().add(l2);
                 }
+
+                int finalK = k;
+                l1.setOnMouseClicked(e -> articles.get(finalK).downloadArticle());
+
                 counterLeftRight++;
                 articleIndex++;
 

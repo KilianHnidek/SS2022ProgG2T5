@@ -1,5 +1,13 @@
 package at.ac.fhcampuswien;
 
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Article {
     class Source {
         private String id;
@@ -61,5 +69,26 @@ public class Article {
     @Override
     public String toString() {
         return /*getClass().getSimpleName()+*/ "Title:" + title + System.lineSeparator() + "Author:" + author + "";
+    }
+
+    public void downloadArticle() {
+        try {
+            InputStream in = new URL(url).openStream();
+            FileChooser fileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File file = fileChooser.showSaveDialog(App.stage);
+
+            if (file != null) {
+                if (file.exists()) {
+                    file.delete();
+                }
+                Files.copy(in, Paths.get(file.getAbsolutePath()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
