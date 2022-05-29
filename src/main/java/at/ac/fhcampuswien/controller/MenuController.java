@@ -1,11 +1,7 @@
 package at.ac.fhcampuswien.controller;
 
-import at.ac.fhcampuswien.App;
-import at.ac.fhcampuswien.AppController;
-import at.ac.fhcampuswien.NewsApi;
-import at.ac.fhcampuswien.NewsApiException;
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
+import at.ac.fhcampuswien.*;
+import at.ac.fhcampuswien.enums.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -25,7 +21,12 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MenuController {
     private final AppController ctrl = new AppController();
@@ -36,10 +37,130 @@ public class MenuController {
     private Pane emptyPane;
     @FXML
     private ImageView waitingGif;
+    @FXML
+    private Label filter1, filter2, filter3, filter4;
+
 
     /*
      * GUI functions
      */
+
+    @FXML
+    void toggleProviderWithMostArticles(MouseEvent event) {
+
+        handleLabelsMouseHovered(event);    //underlines label
+
+        NewsApi.query = "";
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.at;
+
+        try {
+            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            Map<String, Long> map = streamFromList.collect(Collectors.groupingBy(Article::getSourceName, Collectors.counting()));
+
+            //befehl in entry variable speichern und damit arbeiten statt in string und long
+            String name = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
+            Long amount = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
+
+            filter1.setText(name + " has " + amount + " article(s)");
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void toggleAuthorWithLongestName(MouseEvent event) {
+
+        handleLabelsMouseHovered(event);    //underlines label
+
+        NewsApi.query = "";
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.at;
+
+        try {
+            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            filter2.setText
+                    (streamFromList
+                            .map(Article::getAuthor)                                //filters for author
+                            .filter(Objects::nonNull)                               //removes null authors
+                            .max(Comparator.comparingInt(String::length))           //filters for longest string
+                            .get()                                                  //removes "Optional" before author name
+                    );
+
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void toggleNewYorkTimesArticleCount(MouseEvent event) {
+
+        handleLabelsMouseHovered(event);    //underlines label
+
+        NewsApi.query = "";
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.us;
+
+        try {
+            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            filter3.setText(String.valueOf                                      //converts to string
+                    (streamFromList
+                            .map(Article::getSourceName)                        //filters for source
+                            .filter(s -> s.equals("New York Times"))            //filters for NYT
+                            .count()));                                        //counts results
+
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void showArticlesWithLongHeadlines(MouseEvent event) {
+
+        NewsApi.query = "";
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.at;
+
+        try {
+            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            streamFromList
+                    .map(Article::getTitle)
+                    .filter(Objects::nonNull)
+                    .filter(t -> t.length() < 15)
+                    .forEach(System.out::println);          //derweil nur konsolenausgabe
+
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void getTopHeadlinesAustria(MouseEvent event) {
@@ -84,6 +205,8 @@ public class MenuController {
 
         if (NewsApi.query.equals("bitcoin")) {
             controller.chooseNews(ctrl.getAllNewsBitcoin());
+        } else if (NewsApi.query.equals("")) {
+            //controller.chooseNews(ctrl.getArticles());
         } else {
             controller.chooseNews(ctrl.getTopHeadlinesAustria());
         }

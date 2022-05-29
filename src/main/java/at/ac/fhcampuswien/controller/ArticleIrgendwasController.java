@@ -1,12 +1,15 @@
 package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.*;
+import at.ac.fhcampuswien.enums.CountryEnum;
+import at.ac.fhcampuswien.enums.EndpointEnum;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ArticleIrgendwasController {
     private final AppController ctrl = new AppController();
@@ -29,6 +33,60 @@ public class ArticleIrgendwasController {
     private VBox vBoxArticlesLeft, vBoxArticlesRight;
     @FXML
     private ImageView pageFliphilip, pageFlifilipe;
+    @FXML
+    private Label sortAfterDescLen;
+
+
+    @FXML
+    void sortAfterAscendDescLen(MouseEvent event) {
+
+        NewsApi.query = "";
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.countryEnum = CountryEnum.at;
+
+        try {
+                  /**Just for testing purposes*/
+            /*
+            List<String> list = Arrays.asList(
+                    ". Jetzt kostenlos online ansehen!", "Wiener bot bei 1:0 gegen Liverpool starke Leistung – 'Alaba über- überglücklich'",
+                    "Alle Informationen rund um die Lage in der Ukraine sowie Reaktionen aus aller Welt finden Sie hier.",
+                    "Zier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
+                    "Fier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
+                    "Die Nummer 1 kommt wieder von Oskar Haag. Bibiza & Mola starten rasant und steigen auf Platz 6 ein.",
+                    "Das wochenlange Gerichtsverfahren zwischen Amber Heard und Johnny Depp hat am Freitag geendet. Jetzt berät die Jury.",
+                    "Hier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
+                    "Hitzige Debatte um die umstrittene Nordostumfahrung. Die rote Parteijugend probte wortgewaltig den Aufstand, war aber deutlich in der Minderheit.",
+                    "Romy Schneider starb vor 40 Jahren. Doch die Stadt Berlin lehnt ein Gedenken an sie ab. Obwohl die Schauspielerin dort ihre glücklichste Zeit hatte.",
+                    " Jetzt kostenlos online ansehen!", "Wiener bot bei 1:0 gegen Liverpool starke Leistung – 'Alaba über- überglücklich'"
+                    );
+            Stream<String> streamFromList = list.stream();
+
+            //Comparator<String> compByLength = (aName, bName) -> aName.length() - bName.length(); */     /**How to write a comparator */
+
+
+
+            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            streamFromList
+                    .map(Article::getDescription)                       //filters for description
+                    .filter(Objects::nonNull)                           //removes null descriptions
+                    .sorted(Comparator.comparingInt(String::length)     //sorts by length
+                            .thenComparing(String::compareTo))          //and then alphabetically
+                    .forEach(System.out::println);                      //prints the list
+
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     @FXML
     private void handleMousePressed(MouseEvent event) {
@@ -89,12 +147,14 @@ public class ArticleIrgendwasController {
         vBoxArticlesLeft.getChildren().clear();
         vBoxArticlesRight.getChildren().clear();
 
+        /*
         for (Node n : anchorPane.getChildren()) {
             if (n.getClass().getSimpleName().equals("Label")) {
                 n.setDisable(true);
                 n.setVisible(false);
             }
         }
+         */
 
         for (int k = articleIndex; k < articleIndex + 6; k++) {
 

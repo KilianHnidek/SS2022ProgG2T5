@@ -9,6 +9,10 @@ public class Article {
             this.id = id;
             this.name = name;
         }
+
+        public String getName() {
+            return name;
+        }
     }
 
     private Source source;
@@ -44,6 +48,14 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getSourceName() {
+        return source.name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

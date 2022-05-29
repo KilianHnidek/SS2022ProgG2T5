@@ -7,35 +7,55 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="480.0" style="-fx-background-color: TRANSPARENT;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.controller.MenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="780.0" style="-fx-background-color: TRANSPARENT;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.controller.MenuController">
    <children>
-      <ImageView fitHeight="408.0" fitWidth="612.0" layoutX="-6.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="688.0" fitWidth="780.0" layoutX="-6.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@assets/newsdingsta.png" />
          </image>
       </ImageView>
-      <Label fx:id="topHeadlinesAustria" alignment="CENTER" layoutX="152.0" layoutY="218.0" onMouseClicked="#getTopHeadlinesAustria" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get top headlines austria" textAlignment="CENTER">
+      <Label fx:id="topHeadlinesAustria" alignment="CENTER" layoutX="304.0" layoutY="350.0" onMouseClicked="#getTopHeadlinesAustria" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get top headlines austria" textAlignment="CENTER">
          <font>
-            <Font name="Times New Roman" size="12.0" />
+            <Font name="Times New Roman" size="16.0" />
          </font></Label>
-      <Label fx:id="allNewsAboutBitcoin" alignment="CENTER" layoutX="152.0" layoutY="250.0" onMouseClicked="#getAllNewsBitcoin" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get all news about bitcoin" textAlignment="CENTER">
+      <Label fx:id="allNewsAboutBitcoin" alignment="CENTER" layoutX="304.0" layoutY="382.0" onMouseClicked="#getAllNewsBitcoin" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="get all news about bitcoin" textAlignment="CENTER">
          <font>
-            <Font name="Times New Roman" size="12.0" />
+            <Font name="Times New Roman" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="countArticles" alignment="CENTER" layoutX="155.0" layoutY="277.0" onMouseEntered="#getArticleCount" onMouseExited="#getArticleCount" prefWidth="170.0" text="count articles" textAlignment="CENTER">
+      <Label fx:id="countArticles" alignment="CENTER" layoutX="307.0" layoutY="409.0" onMouseEntered="#getArticleCount" onMouseExited="#getArticleCount" prefWidth="170.0" text="count articles" textAlignment="CENTER">
          <font>
-            <Font name="Times New Roman" size="12.0" />
+            <Font name="Times New Roman" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="quitProgram" alignment="CENTER" layoutX="152.0" layoutY="306.0" onMouseClicked="#quitProgram" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="quit program" textAlignment="CENTER">
+      <Label fx:id="quitProgram" alignment="CENTER" layoutX="304.0" layoutY="438.0" onMouseClicked="#quitProgram" onMouseEntered="#handleLabelsMouseHovered" onMouseExited="#handleLabelsMouseHovered" prefWidth="170.0" text="quit program" textAlignment="CENTER">
          <font>
-            <Font name="Times New Roman" size="12.0" />
+            <Font name="Times New Roman" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="emptyPane" layoutY="-6.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" prefHeight="50.0" prefWidth="480.0" />
-      <ImageView fx:id="waitingGif" fitHeight="64.0" fitWidth="64.0" layoutX="205.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <Pane fx:id="emptyPane" layoutX="-1.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" prefHeight="85.0" prefWidth="780.0" />
+      <ImageView fx:id="waitingGif" fitHeight="64.0" fitWidth="64.0" layoutX="350.0" layoutY="370.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <Image url="@assets/waiting.gif" />
       </ImageView>
+      <Label fx:id="filter1" layoutX="26.0" layoutY="332.0" onMouseEntered="#toggleProviderWithMostArticles" onMouseExited="#toggleProviderWithMostArticles" text="Provider with most articles">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="filter2" layoutX="26.0" layoutY="361.0" onMouseEntered="#toggleAuthorWithLongestName" onMouseExited="#toggleAuthorWithLongestName" text="Author with longest">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="filter3" layoutX="26.0" layoutY="392.0" onMouseEntered="#toggleNewYorkTimesArticleCount" onMouseExited="#toggleNewYorkTimesArticleCount" prefHeight="19.0" prefWidth="177.0" text="New York Times article count">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="filter4" layoutX="26.0" layoutY="425.0" onMouseClicked="#showArticlesWithLongHeadlines" prefHeight="19.0" prefWidth="193.0" text="Articles with headline &lt; 15 chars">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
