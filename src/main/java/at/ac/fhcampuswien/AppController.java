@@ -39,8 +39,8 @@ public class AppController {
         //MenuController.labelArticleCount = newsResponse.getTotalResults();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }
-    public static List<Article> getArticles() throws NewsApiException {
 
+    public static List<Article> getArticles() throws NewsApiException {
         NewsResponse newsResponse = NewsApi.run();
         return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
     }

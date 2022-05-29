@@ -21,10 +21,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,6 +37,15 @@ public class MenuController {
     @FXML
     private Label filter1, filter2, filter3, filter4;
 
+    private static String filter1Text, filter2Text, filter3Text;
+
+    @FXML
+    public void initialize() {
+        filter1Text = filter1.getText();
+        filter2Text = filter2.getText();
+        filter3Text = filter3.getText();
+    }
+
 
     /*
      * GUI functions
@@ -47,8 +53,7 @@ public class MenuController {
 
     @FXML
     void toggleProviderWithMostArticles(MouseEvent event) {
-
-        handleLabelsMouseHovered(event);    //underlines label
+        //handleLabelsMouseHovered(event);    //underlines label
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
@@ -63,7 +68,9 @@ public class MenuController {
             String name = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
             Long amount = map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
 
-            filter1.setText(name + " has " + amount + " article(s)");
+            //filter1.setText(name + " has " + amount + " article(s)");
+            String new_text = name + " has " + amount + " article(s)";
+            filter1.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter1Text);
 
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -77,8 +84,7 @@ public class MenuController {
 
     @FXML
     void toggleAuthorWithLongestName(MouseEvent event) {
-
-        handleLabelsMouseHovered(event);    //underlines label
+        //handleLabelsMouseHovered(event);    //underlines label
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
@@ -87,13 +93,17 @@ public class MenuController {
         try {
             Stream<Article> streamFromList = AppController.getArticles().stream();
 
-            filter2.setText
+            /*filter2.setText
                     (streamFromList
                             .map(Article::getAuthor)                                //filters for author
                             .filter(Objects::nonNull)                               //removes null authors
                             .max(Comparator.comparingInt(String::length))           //filters for longest string
                             .get()                                                  //removes "Optional" before author name
                     );
+            */
+
+            String new_text = streamFromList.map(Article::getAuthor).filter(Objects::nonNull).max(Comparator.comparingInt(String::length)).get();
+            filter2.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter2Text);
 
 
         } catch (NewsApiException e) {
@@ -109,7 +119,7 @@ public class MenuController {
     @FXML
     void toggleNewYorkTimesArticleCount(MouseEvent event) {
 
-        handleLabelsMouseHovered(event);    //underlines label
+        //handleLabelsMouseHovered(event);    //underlines label
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
@@ -118,13 +128,15 @@ public class MenuController {
         try {
             Stream<Article> streamFromList = AppController.getArticles().stream();
 
-            filter3.setText(String.valueOf                                      //converts to string
+            /*filter3.setText(String.valueOf                                      //converts to string
                     (streamFromList
                             .map(Article::getSourceName)                        //filters for source
                             .filter(s -> s.equals("New York Times"))            //filters for NYT
                             .count()));                                        //counts results
+            */
 
-
+            String new_text = String.valueOf(streamFromList.map(Article::getSourceName).filter(s -> s.equals("New York Times")).count());
+            filter3.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter3Text);
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -136,22 +148,36 @@ public class MenuController {
     }
 
     @FXML
-    void showArticlesWithLongHeadlines(MouseEvent event) {
-
+    private void showArticlesWithLongHeadlines(MouseEvent event) {
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
         NewsApi.countryEnum = CountryEnum.at;
 
         try {
-            Stream<Article> streamFromList = AppController.getArticles().stream();
+            List<Article> all_articles = AppController.getArticles();
+            Stream<Article> streamFromList = all_articles.stream();
 
+            List<Article> res_articles = new ArrayList<>();
             streamFromList
                     .map(Article::getTitle)
                     .filter(Objects::nonNull)
                     .filter(t -> t.length() < 15)
-                    .forEach(System.out::println);          //derweil nur konsolenausgabe
+                    .forEach(t -> res_articles.add(
+                            all_articles.stream().filter(
+                                    a -> a.getTitle().equals(t)
+                            ).findFirst().get()
+                    ));
 
+            System.out.println(all_articles);
 
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
+            Scene articleScene = new Scene(fxmlLoader.load());
+            ArticleIrgendwasController controller = fxmlLoader.getController();
+
+            controller.chooseNews(res_articles);
+
+            articleScene.setFill(Color.TRANSPARENT);
+            App.stage.setScene(articleScene);
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -205,14 +231,12 @@ public class MenuController {
 
         if (NewsApi.query.equals("bitcoin")) {
             controller.chooseNews(ctrl.getAllNewsBitcoin());
-        } else if (NewsApi.query.equals("")) {
-            //controller.chooseNews(ctrl.getArticles());
         } else {
             controller.chooseNews(ctrl.getTopHeadlinesAustria());
         }
 
-        double posX = App.stage.getX() + App.stage.getWidth()/2 - 32;
-        double posY = App.stage.getY() + App.stage.getHeight()/2 - 32;
+        double posX = App.stage.getX() + App.stage.getWidth() / 2 - 32;
+        double posY = App.stage.getY() + App.stage.getHeight() / 2 - 32;
 
         ImageView waitingGif = new ImageView(new Image(Objects.requireNonNull(App.class.getResourceAsStream("assets/waiting.gif"))));
         waitingGif.setFitWidth(64);
