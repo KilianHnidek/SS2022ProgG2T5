@@ -3,7 +3,9 @@ package at.ac.fhcampuswien;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,7 +15,7 @@ public class Article {
         private String id;
         private String name;
 
-        public Source (String id, String name){
+        public Source(String id, String name) {
             this.id = id;
             this.name = name;
         }
@@ -71,24 +73,21 @@ public class Article {
         return /*getClass().getSimpleName()+*/ "Title:" + title + System.lineSeparator() + "Author:" + author + "";
     }
 
-    public void downloadArticle() {
-        try {
-            InputStream in = new URL(url).openStream();
-            FileChooser fileChooser = new FileChooser();
+    public void downloadArticle() throws IOException {
+        InputStream in = new URL(url).openStream();
+        FileChooser fileChooser = new FileChooser();
 
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
 
-            File file = fileChooser.showSaveDialog(App.stage);
+        File file = fileChooser.showSaveDialog(App.stage);
 
-            if (file != null) {
-                if (file.exists()) {
-                    file.delete();
-                }
-                Files.copy(in, Paths.get(file.getAbsolutePath()));
+        if (file != null) {
+            if (file.exists()) {
+                file.delete();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            Files.copy(in, Paths.get(file.getAbsolutePath()));
         }
     }
 }

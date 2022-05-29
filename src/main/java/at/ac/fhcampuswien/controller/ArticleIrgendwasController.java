@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -80,12 +81,9 @@ public class ArticleIrgendwasController {
             a.setContentText(e.getMessage());
             //setcontent? settext?
             a.show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @FXML
@@ -180,7 +178,21 @@ public class ArticleIrgendwasController {
                 }
 
                 int finalK = k;
-                l1.setOnMouseClicked(e -> articles.get(finalK).downloadArticle());
+                l1.setOnMouseClicked(e -> {
+                    try {
+                        articles.get(finalK).downloadArticle();
+                    } catch (MalformedURLException e) {
+                        Alert a = new Alert(Alert.AlertType.ERROR);
+                        a.setContentText("URL fails to comply with the specific syntax of the associated protocol");
+                        //setcontent? settext?
+                        a.show();
+                    } catch (IOException e) {
+                        Alert a = new Alert(Alert.AlertType.ERROR);
+                        a.setContentText("URL can not be opened");
+                        //setcontent? settext?
+                        a.show();
+                    }
+                });
 
                 counterLeftRight++;
                 articleIndex++;
