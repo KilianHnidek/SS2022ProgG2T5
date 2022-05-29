@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 public class MenuController {
     private final AppController ctrl = new AppController();
-    public static int labelArticleCount;
+    public static int labelArticleCount = 0;
     //private Stage popUpWindow = new Stage();
 
     @FXML
@@ -43,7 +43,6 @@ public class MenuController {
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
         countArticlesText = countArticles.getText();
-        labelArticleCount = 0;
     }
 
     /*
@@ -112,7 +111,7 @@ public class MenuController {
     @FXML
     void toggleNewYorkTimesArticleCount(MouseEvent event) {
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
+        NewsApi.endpointEnum = EndpointEnum.everything;
         NewsApi.countryEnum = CountryEnum.us;
 
         try {
@@ -126,6 +125,8 @@ public class MenuController {
             */
 
             String new_text = String.valueOf(streamFromList.map(Article::getSourceName).filter(s -> s.equals("New York Times")).count());
+            //String new_text = "" + streamFromList.filter(a -> a.getSourceName().equals("New York Times")).count();
+
             filter3.setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? new_text : filter3Text);
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -143,7 +144,7 @@ public class MenuController {
 
         NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.;
+        NewsApi.countryEnum = CountryEnum.at;
 
         try {
             List<Article> all_articles = AppController.getArticles();
