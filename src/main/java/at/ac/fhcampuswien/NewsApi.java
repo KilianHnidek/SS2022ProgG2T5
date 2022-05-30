@@ -1,23 +1,18 @@
 package at.ac.fhcampuswien;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
-
-import at.ac.fhcampuswien.enums.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 
 public class NewsApi {
 
     private static final String API_KEY = "dc31e44d4d4e4653aad6d93b182e981e";
+    private static final String API_KEY_2 = "eeda1a2724234291a06c60a4990b3a31";
     private static final OkHttpClient client = new OkHttpClient();
 
     public final static String url = "https://newsapi.org/";
 
-    public static EndpointEnum endpointEnum;
-    //public static CategoryEnum categoryEnum;
-    public static CountryEnum countryEnum;
-    public static SortByEnum sortByEnum;
+    public static String endpointEnum, categoryEnum, countryEnum, languageEnum, sortByEnum;
     public static String query;
     private static Response response;
 
@@ -25,17 +20,21 @@ public class NewsApi {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
 
         urlBuilder.addPathSegment("v2");
-        urlBuilder.addPathSegment(endpointEnum.getName());
+        urlBuilder.addPathSegment(endpointEnum);
 
         urlBuilder.addQueryParameter("q", query);
-        urlBuilder.addQueryParameter("apiKey", API_KEY);
+        urlBuilder.addQueryParameter("apiKey", API_KEY_2);
 
         if (sortByEnum != null) {
-            urlBuilder.addQueryParameter("sortBy", sortByEnum.toString());
+            urlBuilder.addQueryParameter("sortBy", sortByEnum);
         }
 
         if (countryEnum != null) {
-            urlBuilder.addQueryParameter("country", countryEnum.toString());
+            urlBuilder.addQueryParameter("country", countryEnum);
+        }
+
+        if (categoryEnum != null) {
+            urlBuilder.addQueryParameter("category", categoryEnum);
         }
 
         System.out.println(urlBuilder.build());

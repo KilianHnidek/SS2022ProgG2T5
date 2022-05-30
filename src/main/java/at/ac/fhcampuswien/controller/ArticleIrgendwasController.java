@@ -1,13 +1,10 @@
 package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.*;
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -17,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -27,24 +25,20 @@ public class ArticleIrgendwasController {
     private final AppController ctrl = new AppController();
     private int pageNumber = 1;
     private int articleIndex;
+    private boolean isSorted;
 
     @FXML
-    private Pane anchorPane, emptyPane;
+    private Pane emptyPane;
     @FXML
     private VBox vBoxArticlesLeft, vBoxArticlesRight;
     @FXML
     private ImageView pageFliphilip, pageFlifilipe;
-    @FXML
-    private Label sortAfterDescLen;
 
 
     @FXML
     void sortAfterAscendDescLen(MouseEvent event) {
 
-        NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
-
+        isSorted = true;
         try {
                   /**Just for testing purposes*/
             /*
@@ -65,15 +59,25 @@ public class ArticleIrgendwasController {
             //Comparator<String> compByLength = (aName, bName) -> aName.length() - bName.length(); */     /**How to write a comparator */
 
 
-
             Stream<Article> streamFromList = AppController.getArticles().stream();
 
-            streamFromList
+
+            chooseNews(streamFromList.filter(Objects::nonNull).sorted(
+                    Comparator.comparing(Article::getDescription, Comparator.comparingInt(String::length)
+                            .thenComparing(String::compareTo))
+            ).toList());
+
+
+            Stream<Article> streamFromList2 = AppController.getArticles().stream();
+
+            streamFromList2
                     .map(Article::getDescription)                       //filters for description
                     .filter(Objects::nonNull)                           //removes null descriptions
                     .sorted(Comparator.comparingInt(String::length)     //sorts by length
                             .thenComparing(String::compareTo))          //and then alphabetically
                     .forEach(System.out::println);                      //prints the list
+
+            //String new_text = "" + streamFromList.filter(a -> a.getSourceName().equals("New York Times")).count();
 
 
         } catch (NewsApiException e) {
@@ -103,11 +107,9 @@ public class ArticleIrgendwasController {
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-        if (NewsApi.query.equals("bitcoin")) {
-            chooseNews(ctrl.getAllNewsBitcoin());
-        } else {
-            chooseNews(ctrl.getTopHeadlinesAustria());
-        }
+
+        if (isSorted) sortAfterAscendDescLen(event);
+        else chooseNews(AppController.getArticles());
     }
 
     @FXML
@@ -119,15 +121,13 @@ public class ArticleIrgendwasController {
         if (pageNumber == 0) {
             reloadMenu();
         } else {
-            if (NewsApi.query.equals("bitcoin")) {
-                chooseNews(ctrl.getAllNewsBitcoin());
-            } else {
-                chooseNews(ctrl.getTopHeadlinesAustria());
-            }
+            if (isSorted) sortAfterAscendDescLen(event);
+            else chooseNews(AppController.getArticles());
         }
     }
 
     public void chooseNews (List<Article> articles) {
+
         if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
@@ -145,40 +145,32 @@ public class ArticleIrgendwasController {
         vBoxArticlesLeft.getChildren().clear();
         vBoxArticlesRight.getChildren().clear();
 
-        /*
-        for (Node n : anchorPane.getChildren()) {
-            if (n.getClass().getSimpleName().equals("Label")) {
-                n.setDisable(true);
-                n.setVisible(false);
-            }
-        }
-         */
 
         for (int k = articleIndex; k < articleIndex + 6; k++) {
 
             if (articleIndex < articles.size()) {
-                Label l1 = new Label();
-                l1.alignmentProperty().set(Pos.CENTER);
-                l1.setText(articles.get(articleIndex).getTitle());
-                l1.setFont(Font.font("Times New Roman", 16));
-                l1.setPadding(new Insets(0, 0, 5, 0)); // top, right, bottom, left
+                Text title = new Text();
+                title.setText(articles.get(articleIndex).getTitle());
+                title.setFont(Font.font("Times New Roman", 16));
+                title.setWrappingWidth(260);
 
-                Label l2 = new Label();
-                l2.alignmentProperty().set(Pos.CENTER);
-                l2.setText(articles.get(articleIndex).getAuthor() != null ? articles.get(articleIndex).getAuthor() :"No Author");
-                l2.setFont(Font.font("Times New Roman", 12));
-                l2.setPadding(new Insets(0, 0, 20, 0)); // top, right, bottom, left
+                Label author = new Label();
+                author.alignmentProperty().set(Pos.CENTER);
+                author.setText(articles.get(articleIndex).getAuthor() != null ? articles.get(articleIndex).getAuthor() :"No Author");
+                author.setFont(Font.font("Times New Roman", 14));
+                author.setPadding(new Insets(0, 0, 25, 0)); // top, right, bottom, left
+                author.setPrefWidth(260);
 
                 if (counterLeftRight < 3) {
-                    vBoxArticlesLeft.getChildren().add(l1);
-                    vBoxArticlesLeft.getChildren().add(l2);
+                    vBoxArticlesLeft.getChildren().add(title);
+                    vBoxArticlesLeft.getChildren().add(author);
                 } else {
-                    vBoxArticlesRight.getChildren().add(l1);
-                    vBoxArticlesRight.getChildren().add(l2);
+                    vBoxArticlesRight.getChildren().add(title);
+                    vBoxArticlesRight.getChildren().add(author);
                 }
 
                 int finalK = k;
-                l1.setOnMouseClicked(ev -> {
+                title.setOnMouseClicked(ev -> {
                     try {
                         articles.get(finalK).downloadArticle();
                     } catch (MalformedURLException e) {

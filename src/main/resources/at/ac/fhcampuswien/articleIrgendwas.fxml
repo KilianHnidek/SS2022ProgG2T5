@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,11 +17,17 @@
                 <Image url="@assets/newsdingsta.png" />
             </image>
         </ImageView>
-        <HBox layoutX="109.0" layoutY="323.0" prefHeight="280.0" prefWidth="550.0">
+        <HBox layoutX="90.0" layoutY="323.0" prefHeight="280.0" prefWidth="600.0" spacing="20.0">
             <children>
-                <VBox fx:id="vBoxArticlesLeft" alignment="CENTER" prefWidth="275.0" />
-                <VBox fx:id="vBoxArticlesRight" alignment="CENTER" prefWidth="275.0" />
+                <VBox fx:id="vBoxArticlesLeft" alignment="CENTER" maxHeight="280.0" prefHeight="280.0" prefWidth="290.0" spacing="5.0">
+               <padding>
+                  <Insets left="8.0" right="8.0" />
+               </padding></VBox>
+                <VBox fx:id="vBoxArticlesRight" alignment="CENTER" maxHeight="280.0" prefHeight="280.0" prefWidth="290.0" spacing="5.0" />
             </children>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
         </HBox>
         <Pane fx:id="emptyPane" layoutY="-6.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" prefHeight="69.0" prefWidth="780.0" />
         <ImageView fx:id="pageFlifilipe" disable="true" fitHeight="97.0" fitWidth="126.0" layoutX="-10.0" layoutY="548.0" onMouseClicked="#handleFilipeTouched" pickOnBounds="true" preserveRatio="true">

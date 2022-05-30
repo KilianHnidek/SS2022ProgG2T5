@@ -68,6 +68,8 @@ public class Article {
         InputStream in = new URL(url).openStream();
         FileChooser fileChooser = new FileChooser();
 
+        System.out.println(url);
+
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 

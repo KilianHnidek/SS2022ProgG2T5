@@ -1,9 +1,6 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.controller.MenuController;
-
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.*;
 
 public class AppController {
@@ -23,22 +20,6 @@ public class AppController {
 
     public int getArticleCount() {
         return articles != null ? articles.size() : 0;
-    }
-
-    public List<Article> getTopHeadlinesAustria() throws NewsApiException {
-        NewsResponse newsResponse = NewsApi.run();
-        MenuController.labelArticleCount = newsResponse.getArticles().size();
-        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
-    }
-
-    public List<Article> getAllNewsBitcoin() throws NewsApiException {
-        NewsResponse newsResponse = NewsApi.run();
-        MenuController.labelArticleCount = newsResponse.getArticles().size();
-        //MenuController.labelArticleCount = newsResponse.getTotalResults();
-        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
-
-        //articles = newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
-        //return articles;
     }
 
     public static List<Article> getArticles() throws NewsApiException {

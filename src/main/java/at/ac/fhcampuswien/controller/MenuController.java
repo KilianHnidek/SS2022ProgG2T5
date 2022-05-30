@@ -1,19 +1,21 @@
 package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.*;
-import at.ac.fhcampuswien.enums.CountryEnum;
-import at.ac.fhcampuswien.enums.EndpointEnum;
+import at.ac.fhcampuswien.enums.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -24,18 +26,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MenuController {
-    private final AppController ctrl = new AppController();
     public static int labelArticleCount = 0;
-    //private Stage popUpWindow = new Stage();
 
     @FXML
     private Pane emptyPane;
     @FXML
+    private VBox customReqContainer;
+    @FXML
     private ImageView waitingGif;
     @FXML
     private Label filter1, filter2, filter3, countArticles;
+    @FXML
+    private ChoiceBox<String> countrySelector, categorySelector, languageSelector, endPointSelector, sortBySelector;
 
     private static String filter1Text, filter2Text, filter3Text, countArticlesText;
+    private static final String[] countries = {CountryEnum.at.name(), CountryEnum.de.name(), CountryEnum.us.name(),
+                                               CountryEnum.fr.name(), CountryEnum.cz.name()},
+                                  categories = {CategoryEnum.business.name(), CategoryEnum.entertainment.name(),
+                                                CategoryEnum.general.name(), CategoryEnum.health.name(), CategoryEnum.science.name()},
+                                  language = {LanguageEnum.de.name(), LanguageEnum.en.name(), LanguageEnum.fr.name(), LanguageEnum.es.name()},
+
+                                  endPoint = {EndpointEnum.topHeadlines.getName(), EndpointEnum.everything.name()},
+
+                                  sortBy = {SortByEnum.popularity.name(), SortByEnum.relevancy.name(), SortByEnum.publishedAt.name()};
 
     @FXML
     public void initialize() {
@@ -43,6 +56,35 @@ public class MenuController {
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
         countArticlesText = countArticles.getText();
+
+        //categorySelector.getItems().addAll(categories);           -> doesn't work
+        //String[] x = {String.valueOf(CategoryEnum.values())};     -> doesn't work
+
+        countrySelector.setValue("none");
+        countrySelector.getItems().add("none");
+        for (String element : countries) {
+            countrySelector.getItems().add(element);
+        }
+        categorySelector.setValue("none");
+        categorySelector.getItems().add("none");
+        for (String element : categories) {
+            categorySelector.getItems().add(element);
+        }
+        languageSelector.setValue("none");
+        languageSelector.getItems().add("none");
+        for (String element : language) {
+            languageSelector.getItems().add(element);
+        }
+        endPointSelector.setValue("none");
+        endPointSelector.getItems().add("none");
+        for (String element : endPoint) {
+            endPointSelector.getItems().add(element);
+        }
+        sortBySelector.setValue("none");
+        sortBySelector.getItems().add("none");
+        for (String element : sortBy) {
+            sortBySelector.getItems().add(element);
+        }
     }
 
     /*
@@ -50,10 +92,47 @@ public class MenuController {
      */
 
     @FXML
+    void openCustomReqWindow(MouseEvent event) {
+
+        customReqContainer.setVisible(!customReqContainer.isVisible());
+    }
+
+    @FXML
+    void createCustomReq(ActionEvent event) {
+
+                                                                            //endPoint can only be set to "everything" if countySelector is null
+        NewsApi.endpointEnum = !(endPointSelector.getValue().equals("none")) && countrySelector.getValue().equals("none") ? endPointSelector.getValue() : EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = !(countrySelector.getValue().equals("none")) ? countrySelector.getValue() : null;
+        NewsApi.categoryEnum = !(categorySelector.getValue().equals("none")) ? categorySelector.getValue() : null;
+        NewsApi.sortByEnum = !(sortBySelector.getValue().equals("none")) ? sortBySelector.getValue() : null;
+        //NewsApi.languageEnum = languageSelector.getValue();       -> no option to filter languages in NewsAPI
+
+
+
+        try {
+            showArticleScene(AppController.getArticles());
+
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(e.getMessage());
+            //setcontent? settext?
+            a.show();
+
+            waitingGif.setVisible(false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            waitingGif.setVisible(false);
+        }
+
+    }
+
+    @FXML
     void toggleProviderWithMostArticles(MouseEvent event) {
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
             Stream<Article> streamFromList = AppController.getArticles().stream();
@@ -81,8 +160,8 @@ public class MenuController {
     @FXML
     void toggleAuthorWithLongestName(MouseEvent event) {
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
             Stream<Article> streamFromList = AppController.getArticles().stream();
@@ -111,8 +190,8 @@ public class MenuController {
     @FXML
     void toggleNewYorkTimesArticleCount(MouseEvent event) {
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.everything;
-        NewsApi.countryEnum = CountryEnum.us;
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = CountryEnum.us.name();
 
         try {
             Stream<Article> streamFromList = AppController.getArticles().stream();
@@ -143,8 +222,8 @@ public class MenuController {
         waitingGif.setVisible(true);
 
         NewsApi.query = "";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
             List<Article> all_articles = AppController.getArticles();
@@ -161,18 +240,8 @@ public class MenuController {
                             ).findFirst().get()
                     ));
 
-            //System.out.println(all_articles);
-
             showArticleScene(res_articles);
 
-            /*FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("articleIrgendwas.fxml"));
-            Scene articleScene = new Scene(fxmlLoader.load());
-            ArticleIrgendwasController controller = fxmlLoader.getController();
-
-            controller.chooseNews(res_articles);
-
-            articleScene.setFill(Color.TRANSPARENT);
-            App.stage.setScene(articleScene);*/
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -192,11 +261,12 @@ public class MenuController {
         waitingGif.setVisible(true);
 
         NewsApi.query = "corona";
-        NewsApi.endpointEnum = EndpointEnum.topHeadlines;
-        NewsApi.countryEnum = CountryEnum.at;
+        NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
+        NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
-            showArticleScene(ctrl.getTopHeadlinesAustria());
+            showArticleScene(AppController.getArticles());
+
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -216,11 +286,11 @@ public class MenuController {
         waitingGif.setVisible(true);
 
         NewsApi.query = "bitcoin";
-        NewsApi.endpointEnum = EndpointEnum.everything;
+        NewsApi.endpointEnum = EndpointEnum.everything.name();
         NewsApi.countryEnum = null;
 
         try {
-            showArticleScene(ctrl.getAllNewsBitcoin());
+            showArticleScene(AppController.getArticles());
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -242,21 +312,6 @@ public class MenuController {
 
         controller.chooseNews(articles);
 
-        /*double posX = App.stage.getX() + App.stage.getWidth() / 2 - 32;
-        double posY = App.stage.getY() + App.stage.getHeight() / 2 - 32;
-
-        ImageView waitingGif = new ImageView(new Image(Objects.requireNonNull(App.class.getResourceAsStream("assets/waiting.gif"))));
-        waitingGif.setFitWidth(64);
-        waitingGif.setFitHeight(64);
-
-        Stage popUpWindow = new Stage();
-        popUpWindow.setX(posX);
-        popUpWindow.setY(posY);
-        popUpWindow.setAlwaysOnTop(true);
-        popUpWindow.initStyle(StageStyle.TRANSPARENT);
-        popUpWindow.setScene(new Scene(new Group(waitingGif), 64, 64));
-        popUpWindow.getScene().setFill(Color.TRANSPARENT);
-        popUpWindow.show();*/
         articleScene.setFill(Color.TRANSPARENT);
 
         new Timeline(new KeyFrame(Duration.seconds(1), e -> App.stage.setScene(articleScene))).play();
@@ -269,8 +324,7 @@ public class MenuController {
 
     @FXML
     private void quitProgram(MouseEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }
 
     /*
