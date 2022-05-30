@@ -22,11 +22,15 @@ public class AppController {
         return articles != null ? articles.size() : 0;
     }
 
-    public static List<Article> getArticles() throws NewsApiException {
+    public List<Article> getArticles() {
+
+        return articles != null ? articles : new ArrayList<>();
+    }
+    public static List<Article> requestArticles() throws NewsApiException {
+
         NewsResponse newsResponse = NewsApi.run();
 
-        MenuController.labelArticleCount = newsResponse.getArticles().size();
-        return newsResponse.getArticles() != null ? newsResponse.getArticles() : new ArrayList<>();
+        return newsResponse.getArticles();
     }
 
     protected static List<Article> filterList(String query, List<Article> articles) {

@@ -9,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -26,7 +24,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MenuController {
-    public static int labelArticleCount = 0;
+
+    private static String filter1Text, filter2Text, filter3Text, countArticlesText;
+    public static AppController controller = new AppController();
 
     @FXML
     private Pane emptyPane;
@@ -37,53 +37,56 @@ public class MenuController {
     @FXML
     private Label filter1, filter2, filter3, countArticles;
     @FXML
-    private ChoiceBox<String> countrySelector, categorySelector, languageSelector, endPointSelector, sortBySelector;
+    private TextField querySelector;
+    @FXML
+    private Button customReqButton;
+    @FXML
+    private ComboBox<String> countrySelector, categorySelector, languageSelector, endPointSelector, sortBySelector;
 
-    private static String filter1Text, filter2Text, filter3Text, countArticlesText;
-    private static final String[] countries = {CountryEnum.at.name(), CountryEnum.de.name(), CountryEnum.us.name(),
-                                               CountryEnum.fr.name(), CountryEnum.cz.name()},
-                                  categories = {CategoryEnum.business.name(), CategoryEnum.entertainment.name(),
-                                                CategoryEnum.general.name(), CategoryEnum.health.name(), CategoryEnum.science.name()},
-                                  language = {LanguageEnum.de.name(), LanguageEnum.en.name(), LanguageEnum.fr.name(), LanguageEnum.es.name()},
+    private final ComboBox<String>[] comboBoxes = new ComboBox[3];
 
-                                  endPoint = {EndpointEnum.topHeadlines.getName(), EndpointEnum.everything.name()},
-
-                                  sortBy = {SortByEnum.popularity.name(), SortByEnum.relevancy.name(), SortByEnum.publishedAt.name()};
 
     @FXML
     public void initialize() {
+
+        comboBoxes[0] = countrySelector;
+        comboBoxes[1] = categorySelector;
+        comboBoxes[2] = languageSelector;
+
+        NewsApi.query = "";
+
         filter1Text = filter1.getText();
         filter2Text = filter2.getText();
         filter3Text = filter3.getText();
         countArticlesText = countArticles.getText();
 
-        //categorySelector.getItems().addAll(categories);           -> doesn't work
-        //String[] x = {String.valueOf(CategoryEnum.values())};     -> doesn't work
-
         countrySelector.setValue("none");
         countrySelector.getItems().add("none");
-        for (String element : countries) {
-            countrySelector.getItems().add(element);
+        for (CountryEnum element : CountryEnum.values()) {
+            countrySelector.getItems().add(String.valueOf(element));
         }
+
         categorySelector.setValue("none");
         categorySelector.getItems().add("none");
-        for (String element : categories) {
-            categorySelector.getItems().add(element);
+        for (CategoryEnum element : CategoryEnum.values()) {
+            categorySelector.getItems().add(String.valueOf(element));
         }
+
         languageSelector.setValue("none");
         languageSelector.getItems().add("none");
-        for (String element : language) {
-            languageSelector.getItems().add(element);
+        for (LanguageEnum element : LanguageEnum.values()) {
+            languageSelector.getItems().add(String.valueOf(element));
         }
+
         endPointSelector.setValue("none");
         endPointSelector.getItems().add("none");
-        for (String element : endPoint) {
-            endPointSelector.getItems().add(element);
+        for (EndpointEnum element : EndpointEnum.values()) {
+            endPointSelector.getItems().add(String.valueOf(element.getName()));
         }
         sortBySelector.setValue("none");
         sortBySelector.getItems().add("none");
-        for (String element : sortBy) {
-            sortBySelector.getItems().add(element);
+        for (SortByEnum element : SortByEnum.values()) {
+            sortBySelector.getItems().add(String.valueOf(element));
         }
     }
 
@@ -91,26 +94,66 @@ public class MenuController {
      * GUI functions
      */
 
-    @FXML
-    void openCustomReqWindow(MouseEvent event) {
 
+    @FXML
+    void updateQueryParams() {
+
+
+        customReqButton.setDisable(true);
+
+        if (querySelector.getText().equals("")) {
+            for (ComboBox cb : comboBoxes) {
+
+                if (!cb.getValue().equals("none")) {
+                    customReqButton.setDisable(false);
+                }
+            }
+        } else customReqButton.setDisable(false);
+
+        if (!countrySelector.getValue().equals("none") || querySelector.getText().equals("")) {
+
+            endPointSelector.setValue(EndpointEnum.topHeadlines.getName());
+            endPointSelector.setDisable(true);
+
+        } else if (countrySelector.getValue().equals("none") && !querySelector.getText().equals("")) {
+
+            if (endPointSelector.isDisabled()) endPointSelector.setValue("none");
+            endPointSelector.setDisable(false);
+        }
+
+        if (endPointSelector.getValue().equals(EndpointEnum.everything.getName())) {
+            categorySelector.setValue("none");
+            categorySelector.setDisable(true);
+            countrySelector.setDisable(true);
+            countrySelector.setValue("none");
+        } else {
+            categorySelector.setDisable(false);
+            countrySelector.setDisable(false);
+        }
+    }
+
+    @FXML
+    void openCustomReqWindow() {
+        updateQueryParams();
         customReqContainer.setVisible(!customReqContainer.isVisible());
     }
 
     @FXML
-    void createCustomReq(ActionEvent event) {
+    void createCustomReq() {
 
+        waitingGif.setVisible(true);
+        NewsApi.query = querySelector.getText();
                                                                             //endPoint can only be set to "everything" if countySelector is null
-        NewsApi.endpointEnum = !(endPointSelector.getValue().equals("none")) && countrySelector.getValue().equals("none") ? endPointSelector.getValue() : EndpointEnum.topHeadlines.getName();
+        NewsApi.endpointEnum = !(endPointSelector.getValue().equals("none")) ? endPointSelector.getValue() : EndpointEnum.topHeadlines.getName();
         NewsApi.countryEnum = !(countrySelector.getValue().equals("none")) ? countrySelector.getValue() : null;
         NewsApi.categoryEnum = !(categorySelector.getValue().equals("none")) ? categorySelector.getValue() : null;
         NewsApi.sortByEnum = !(sortBySelector.getValue().equals("none")) ? sortBySelector.getValue() : null;
-        //NewsApi.languageEnum = languageSelector.getValue();       -> no option to filter languages in NewsAPI
-
+        NewsApi.languageEnum = !(languageSelector.getValue().equals("none")) ? languageSelector.getValue() : null;
 
 
         try {
-            showArticleScene(AppController.getArticles());
+            controller.setArticles(AppController.requestArticles());
+            showArticleScene(controller.getArticles());
 
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -130,12 +173,12 @@ public class MenuController {
 
     @FXML
     void toggleProviderWithMostArticles(MouseEvent event) {
-        NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
         NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
-            Stream<Article> streamFromList = AppController.getArticles().stream();
+
+            Stream<Article> streamFromList = AppController.requestArticles().stream();
 
             Map<String, Long> map = streamFromList.collect(Collectors.groupingBy(Article::getSourceName, Collectors.counting()));
 
@@ -159,12 +202,11 @@ public class MenuController {
 
     @FXML
     void toggleAuthorWithLongestName(MouseEvent event) {
-        NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
         NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
-            Stream<Article> streamFromList = AppController.getArticles().stream();
+            Stream<Article> streamFromList = AppController.requestArticles().stream();
 
             /*filter2.setText
                     (streamFromList
@@ -189,12 +231,11 @@ public class MenuController {
 
     @FXML
     void toggleNewYorkTimesArticleCount(MouseEvent event) {
-        NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
         NewsApi.countryEnum = CountryEnum.us.name();
 
         try {
-            Stream<Article> streamFromList = AppController.getArticles().stream();
+            Stream<Article> streamFromList = AppController.requestArticles().stream();
 
             /*filter3.setText(String.valueOf                                      //converts to string
                     (streamFromList
@@ -221,12 +262,11 @@ public class MenuController {
     private void showArticlesWithShortHeadlines() {
         waitingGif.setVisible(true);
 
-        NewsApi.query = "";
         NewsApi.endpointEnum = EndpointEnum.topHeadlines.getName();
         NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
-            List<Article> all_articles = AppController.getArticles();
+            List<Article> all_articles = AppController.requestArticles();
             Stream<Article> streamFromList = all_articles.stream();
 
             List<Article> res_articles = new ArrayList<>();
@@ -240,6 +280,7 @@ public class MenuController {
                             ).findFirst().get()
                     ));
 
+            controller.setArticles(res_articles);
             showArticleScene(res_articles);
 
         } catch (NewsApiException e) {
@@ -265,7 +306,8 @@ public class MenuController {
         NewsApi.countryEnum = CountryEnum.at.name();
 
         try {
-            showArticleScene(AppController.getArticles());
+            controller.setArticles(AppController.requestArticles());
+            showArticleScene(controller.getArticles());
 
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -283,6 +325,7 @@ public class MenuController {
 
     @FXML
     private void getAllNewsBitcoin() {
+
         waitingGif.setVisible(true);
 
         NewsApi.query = "bitcoin";
@@ -290,7 +333,9 @@ public class MenuController {
         NewsApi.countryEnum = null;
 
         try {
-            showArticleScene(AppController.getArticles());
+            controller.setArticles(AppController.requestArticles());
+            showArticleScene(controller.getArticles());
+
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -314,12 +359,12 @@ public class MenuController {
 
         articleScene.setFill(Color.TRANSPARENT);
 
-        new Timeline(new KeyFrame(Duration.seconds(1), e -> App.stage.setScene(articleScene))).play();
+        new Timeline(new KeyFrame(Duration.seconds(3), e -> App.stage.setScene(articleScene))).play();
     }
 
     @FXML
     private void getArticleCount(MouseEvent event) {
-        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? labelArticleCount + "" : countArticlesText);
+        ((Label) event.getSource()).setText(MouseEvent.MOUSE_ENTERED == event.getEventType() ? controller.getArticleCount() + "" : countArticlesText);
     }
 
     @FXML

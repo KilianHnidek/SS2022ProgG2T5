@@ -19,11 +19,13 @@ public class NewsApi {
     static NewsResponse run() throws NewsApiException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
 
+
         urlBuilder.addPathSegment("v2");
         urlBuilder.addPathSegment(endpointEnum);
 
         urlBuilder.addQueryParameter("q", query);
         urlBuilder.addQueryParameter("apiKey", API_KEY_2);
+        urlBuilder.addQueryParameter("pageSize", "100");
 
         if (sortByEnum != null) {
             urlBuilder.addQueryParameter("sortBy", sortByEnum);
@@ -35,6 +37,9 @@ public class NewsApi {
 
         if (categoryEnum != null) {
             urlBuilder.addQueryParameter("category", categoryEnum);
+        }
+        if (languageEnum != null) {
+            urlBuilder.addQueryParameter("language", languageEnum);
         }
 
         System.out.println(urlBuilder.build());

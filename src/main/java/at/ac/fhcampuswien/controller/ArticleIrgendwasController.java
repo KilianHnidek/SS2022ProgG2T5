@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class ArticleIrgendwasController {
-    private final AppController ctrl = new AppController();
     private int pageNumber = 1;
     private int articleIndex;
     private boolean isSorted;
@@ -39,8 +38,7 @@ public class ArticleIrgendwasController {
     void sortAfterAscendDescLen(MouseEvent event) {
 
         isSorted = true;
-        try {
-                  /**Just for testing purposes*/
+        /**Just for testing purposes*/
             /*
             List<String> list = Arrays.asList(
                     ". Jetzt kostenlos online ansehen!", "Wiener bot bei 1:0 gegen Liverpool starke Leistung – 'Alaba über- überglücklich'",
@@ -59,16 +57,16 @@ public class ArticleIrgendwasController {
             //Comparator<String> compByLength = (aName, bName) -> aName.length() - bName.length(); */     /**How to write a comparator */
 
 
-            Stream<Article> streamFromList = AppController.getArticles().stream();
+        Stream<Article> streamFromList = MenuController.controller.getArticles().stream();
+
+        chooseNews(streamFromList.filter(Objects::nonNull).sorted(
+                Comparator.comparing(Article::getDescription, Comparator.comparingInt(String::length)
+                        .thenComparing(String::compareTo))
+        ).toList());
 
 
-            chooseNews(streamFromList.filter(Objects::nonNull).sorted(
-                    Comparator.comparing(Article::getDescription, Comparator.comparingInt(String::length)
-                            .thenComparing(String::compareTo))
-            ).toList());
-
-
-            Stream<Article> streamFromList2 = AppController.getArticles().stream();
+            /*
+            Stream<Article> streamFromList2 = AppController.requestArticles().stream();
 
             streamFromList2
                     .map(Article::getDescription)                       //filters for description
@@ -78,16 +76,8 @@ public class ArticleIrgendwasController {
                     .forEach(System.out::println);                      //prints the list
 
             //String new_text = "" + streamFromList.filter(a -> a.getSourceName().equals("New York Times")).count();
+            */
 
-
-        } catch (NewsApiException e) {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setContentText(e.getMessage());
-            //setcontent? settext?
-            a.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -107,9 +97,8 @@ public class ArticleIrgendwasController {
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-
         if (isSorted) sortAfterAscendDescLen(event);
-        else chooseNews(AppController.getArticles());
+        else chooseNews(MenuController.controller.getArticles());
     }
 
     @FXML
@@ -122,15 +111,16 @@ public class ArticleIrgendwasController {
             reloadMenu();
         } else {
             if (isSorted) sortAfterAscendDescLen(event);
-            else chooseNews(AppController.getArticles());
+            else chooseNews(MenuController.controller.getArticles());
         }
     }
 
-    public void chooseNews (List<Article> articles) {
+    public void chooseNews(List<Article> articles) {
 
         if (pageNumber * 6 <= articles.size()) {
             pageFliphilip.setVisible(true);
             pageFliphilip.setDisable(false);
+
         } else {
             pageFliphilip.setVisible(false);
             pageFliphilip.setDisable(true);
@@ -156,7 +146,7 @@ public class ArticleIrgendwasController {
 
                 Label author = new Label();
                 author.alignmentProperty().set(Pos.CENTER);
-                author.setText(articles.get(articleIndex).getAuthor() != null ? articles.get(articleIndex).getAuthor() :"No Author");
+                author.setText(articles.get(articleIndex).getAuthor() != null ? articles.get(articleIndex).getAuthor() : "No Author");
                 author.setFont(Font.font("Times New Roman", 14));
                 author.setPadding(new Insets(0, 0, 25, 0)); // top, right, bottom, left
                 author.setPrefWidth(260);
