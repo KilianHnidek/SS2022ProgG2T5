@@ -1,6 +1,8 @@
 package at.ac.fhcampuswien.controller;
 
 import at.ac.fhcampuswien.*;
+import at.ac.fhcampuswien.downloader.ParallelDownloader;
+import at.ac.fhcampuswien.downloader.SequentialDownloader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -33,51 +35,16 @@ public class ArticleIrgendwasController {
     @FXML
     private ImageView pageFliphilip, pageFlifilipe;
 
-
     @FXML
-    void sortAfterAscendDescLen(MouseEvent event) {
-
+    void sortAfterAscendDescLen() {
         isSorted = true;
-        /**Just for testing purposes*/
-            /*
-            List<String> list = Arrays.asList(
-                    ". Jetzt kostenlos online ansehen!", "Wiener bot bei 1:0 gegen Liverpool starke Leistung – 'Alaba über- überglücklich'",
-                    "Alle Informationen rund um die Lage in der Ukraine sowie Reaktionen aus aller Welt finden Sie hier.",
-                    "Zier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
-                    "Fier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
-                    "Die Nummer 1 kommt wieder von Oskar Haag. Bibiza & Mola starten rasant und steigen auf Platz 6 ein.",
-                    "Das wochenlange Gerichtsverfahren zwischen Amber Heard und Johnny Depp hat am Freitag geendet. Jetzt berät die Jury.",
-                    "Hier finden Sie alle Live-Ticker, Spielpläne, Fußball Ergebnisse, Tabellen, Tipps und Spielberichte der Admiral Bundesliga - Österreich",
-                    "Hitzige Debatte um die umstrittene Nordostumfahrung. Die rote Parteijugend probte wortgewaltig den Aufstand, war aber deutlich in der Minderheit.",
-                    "Romy Schneider starb vor 40 Jahren. Doch die Stadt Berlin lehnt ein Gedenken an sie ab. Obwohl die Schauspielerin dort ihre glücklichste Zeit hatte.",
-                    " Jetzt kostenlos online ansehen!", "Wiener bot bei 1:0 gegen Liverpool starke Leistung – 'Alaba über- überglücklich'"
-                    );
-            Stream<String> streamFromList = list.stream();
 
-            //Comparator<String> compByLength = (aName, bName) -> aName.length() - bName.length(); */     /**How to write a comparator */
-
-
-        Stream<Article> streamFromList = MenuController.controller.getArticles().stream();
+        Stream<Article> streamFromList = AppController.getAppController().getArticles().stream();
 
         chooseNews(streamFromList.filter(Objects::nonNull).sorted(
                 Comparator.comparing(Article::getDescription, Comparator.comparingInt(String::length)
                         .thenComparing(String::compareTo))
         ).toList());
-
-
-            /*
-            Stream<Article> streamFromList2 = AppController.requestArticles().stream();
-
-            streamFromList2
-                    .map(Article::getDescription)                       //filters for description
-                    .filter(Objects::nonNull)                           //removes null descriptions
-                    .sorted(Comparator.comparingInt(String::length)     //sorts by length
-                            .thenComparing(String::compareTo))          //and then alphabetically
-                    .forEach(System.out::println);                      //prints the list
-
-            //String new_text = "" + streamFromList.filter(a -> a.getSourceName().equals("New York Times")).count();
-            */
-
     }
 
     @FXML
@@ -91,18 +58,18 @@ public class ArticleIrgendwasController {
     }
 
     @FXML
-    private void handlePhilipTouched(MouseEvent event) throws NewsApiException {
+    private void handlePhilipTouched(){
         // right
         pageNumber++;
         pageFlifilipe.setVisible(true);
         pageFlifilipe.setDisable(false);
 
-        if (isSorted) sortAfterAscendDescLen(event);
-        else chooseNews(MenuController.controller.getArticles());
+        if (isSorted) sortAfterAscendDescLen();
+        else chooseNews(AppController.getAppController().getArticles());
     }
 
     @FXML
-    private void handleFilipeTouched(MouseEvent event) throws IOException, NewsApiException {
+    private void handleFilipeTouched() throws IOException{
         // left
         pageNumber--;
         articleIndex -= 6;
@@ -110,8 +77,8 @@ public class ArticleIrgendwasController {
         if (pageNumber == 0) {
             reloadMenu();
         } else {
-            if (isSorted) sortAfterAscendDescLen(event);
-            else chooseNews(MenuController.controller.getArticles());
+            if (isSorted) sortAfterAscendDescLen();
+            else chooseNews(AppController.getAppController().getArticles());
         }
     }
 
@@ -193,5 +160,43 @@ public class ArticleIrgendwasController {
         App.scene = new Scene(fxmlLoader.load());
         App.scene.setFill(Color.TRANSPARENT);
         App.stage.setScene(App.scene);
+    }
+
+    public void downloadArticles() {
+        try {
+            SequentialDownloader s = new SequentialDownloader();
+            long startSeq = System.currentTimeMillis();
+            s.process(AppController.getAppController().downloadURLs());
+            long endSeq = System.currentTimeMillis();
+
+            ParallelDownloader p = new ParallelDownloader();
+            long startPar = System.currentTimeMillis();
+            p.process(AppController.getAppController().downloadURLs());
+            long endPar = System.currentTimeMillis();
+
+            long durSeq = endSeq - startSeq;
+            long durPar = endPar - startPar;
+
+
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            if (durPar > durSeq) {
+                a.setContentText("Der sequentielle Download war um "
+                        + (durPar - durSeq) +
+                        "ms schneller als der parallele Download.");
+            } else if (durPar < durSeq) {
+                a.setContentText("Der sequentielle Download war um "
+                        + (durSeq - durPar) +
+                        "ms langsamer als der parallele Download.");
+            } else {
+                a.setContentText("Der sequentielle Download war gleich schnell wie"
+                        + " der parallele Download.");
+            }
+            a.show();
+        } catch (NewsApiException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setHeaderText("Problem while downloading");
+            System.out.println("hallo");
+            a.show();
+        }
     }
 }

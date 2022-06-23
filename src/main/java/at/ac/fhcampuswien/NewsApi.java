@@ -5,51 +5,68 @@ import com.google.gson.Gson;
 import okhttp3.*;
 
 public class NewsApi {
+    private static NewsApi newsApi;
 
-    private static final String API_KEY = "dc31e44d4d4e4653aad6d93b182e981e";
-    private static final String API_KEY_2 = "eeda1a2724234291a06c60a4990b3a31";
-    private static final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
-    public final static String url = "https://newsapi.org/";
+    private String endpointEnum, categoryEnum, countryEnum, languageEnum,
+            sortByEnum, query;
 
-    public static String endpointEnum, categoryEnum, countryEnum, languageEnum, sortByEnum;
-    public static String query;
-    private static Response response;
+    private NewsApi() {
+    }
 
-    static NewsResponse run() throws NewsApiException {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
-
-
-        urlBuilder.addPathSegment("v2");
-        urlBuilder.addPathSegment(endpointEnum);
-
-        urlBuilder.addQueryParameter("q", query);
-        urlBuilder.addQueryParameter("apiKey", API_KEY_2);
-        urlBuilder.addQueryParameter("pageSize", "100");
-
-        if (sortByEnum != null) {
-            urlBuilder.addQueryParameter("sortBy", sortByEnum);
+    public static NewsApi getNewsApi() {
+        if (NewsApi.newsApi == null) {
+            NewsApi.newsApi = new NewsApi();
         }
+        return NewsApi.newsApi;
+    }
 
-        if (countryEnum != null) {
-            urlBuilder.addQueryParameter("country", countryEnum);
+    public void setEndpointEnum(String endpointEnum) {
+        this.endpointEnum = endpointEnum;
+    }
+
+    public void setCategoryEnum(String categoryEnum) {
+        this.categoryEnum = categoryEnum;
+    }
+
+    public void setCountryEnum(String countryEnum) {
+        this.countryEnum = countryEnum;
+    }
+
+    public void setLanguageEnum(String languageEnum) {
+        this.languageEnum = languageEnum;
+    }
+
+    public void setSortByEnum(String sortByEnum) {
+        this.sortByEnum = sortByEnum;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public NewsResponse getResponse() throws NewsApiException{
+        try {
+            return NewsApi.newsApi.run();
+        }catch (NewsApiException exception) {
+            throw exception;
         }
+    }
 
-        if (categoryEnum != null) {
-            urlBuilder.addQueryParameter("category", categoryEnum);
-        }
-        if (languageEnum != null) {
-            urlBuilder.addQueryParameter("language", languageEnum);
-        }
-
-        System.out.println(urlBuilder.build());
-
-        Request request = new Request.Builder()
-                .url(urlBuilder.build().toString())
-                .build();
+    private NewsResponse run() throws NewsApiException {
+        Request req = new URL.Builder()
+                .endpoint(endpointEnum)
+                .category(categoryEnum)
+                .country(countryEnum)
+                .language(languageEnum)
+                .sortBy(sortByEnum)
+                .query(query)
+                .build()
+                .getRequest();
 
         try {
-            Response response = client.newCall(request).execute();
+            Response response = client.newCall(req).execute();
             Gson gson = new Gson();
 
             if (!response.isSuccessful()) {
@@ -88,15 +105,5 @@ public class NewsApi {
             throw new NewsApiException("something went wrong");
         }
     }
-/*
-    public static void main(String[] args) throws IOException {
-        NewsApi newsApi = new NewsApi();
-        NewsResponse response = newsApi.run();
-
-        for (Article a : response.getArticles()) {
-            System.out.println(a);
-        }
-    }
- */
 }
 

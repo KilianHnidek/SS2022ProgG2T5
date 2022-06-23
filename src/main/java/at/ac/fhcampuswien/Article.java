@@ -59,6 +59,10 @@ public class Article {
         return description;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     @Override
     public String toString() {
         return /*getClass().getSimpleName()+*/ "Title:" + title + System.lineSeparator() + "Author:" + author + "";

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Button?>
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="780.0" style="-fx-background-color: TRANSPARENT;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.controller.ArticleIrgendwasController">
     <children>
         <ImageView fitHeight="660.0" fitWidth="780.0" layoutX="-6.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
@@ -45,5 +46,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+        <Button layoutY="298" layoutX="100" onMouseClicked="#downloadArticles">download</Button>
     </children>
 </AnchorPane>

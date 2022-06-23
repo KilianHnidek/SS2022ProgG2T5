@@ -4,10 +4,22 @@ import at.ac.fhcampuswien.controller.MenuController;
 import java.util.*;
 
 public class AppController {
+    private static AppController appController;
     private List<Article> articles;
 
-    public AppController() {
+    private AppController() {
         //articles = generateMockList();
+    }
+
+    public static AppController getAppController() {
+        if (AppController.appController == null) {
+            AppController.appController = new AppController();
+        }
+        return AppController.appController;
+    }
+
+    public List<String> downloadURLs() {
+        return articles.stream().map(Article::getUrl).toList();
     }
 
     /**
@@ -23,17 +35,16 @@ public class AppController {
     }
 
     public List<Article> getArticles() {
-
         return articles != null ? articles : new ArrayList<>();
     }
-    public static List<Article> requestArticles() throws NewsApiException {
 
-        NewsResponse newsResponse = NewsApi.run();
-
-        return newsResponse.getArticles();
+    public void requestArticles() throws NewsApiException {
+        NewsResponse response = NewsApi.getNewsApi().getResponse();
+        setArticles(response.getArticles());
+        //return response.getArticles();
     }
 
-    protected static List<Article> filterList(String query, List<Article> articles) {
+    public static List<Article> filterList(String query, List<Article> articles) {
         List<Article> res_articles = new ArrayList<>();
 
         for (Article a : articles) {
