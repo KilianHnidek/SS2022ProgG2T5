@@ -9,33 +9,39 @@ public class URL {
 
     private static final String url = "https://newsapi.org/";
 
-    private String sortByParam, countryParam, categoryParam, languageParam,
+    private final String sortByParam, countryParam, categoryParam, languageParam,
             queryParam, endpointParam;
 
     public Request getRequest() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
+        return new Request.Builder().url(toString()).build();
+    }
 
-        urlBuilder.addPathSegment("v2").addPathSegment(endpointParam)
-                .addQueryParameter("q", queryParam)
-                .addQueryParameter("apiKey", API_KEY_2)
-                .addQueryParameter("pageSize", "100");
+    public String toString() {
+        String res = url;
+        res += "v2/" + endpointParam +
+                "?q=" + queryParam +
+                "&apiKey=" + API_KEY +
+                "&pagesize=100";
 
         if (sortByParam != null) {
-            urlBuilder.addQueryParameter("sortBy", sortByParam);
+            res += "&sortBy=" + sortByParam;
         }
 
         if (countryParam != null) {
-            urlBuilder.addQueryParameter("country", countryParam);
+            res += "&country=" + countryParam;
         }
 
         if (categoryParam != null) {
-            urlBuilder.addQueryParameter("category", categoryParam);
-        }
-        if (languageParam != null) {
-            urlBuilder.addQueryParameter("language", languageParam);
+            res += "&category=" + categoryParam;
         }
 
-        return new Request.Builder().url(urlBuilder.toString()).build();
+        if (languageParam != null) {
+            res += "&language=" + languageParam;
+        }
+
+        System.out.println(res);
+
+        return res;
     }
 
     private URL(Builder builder) {
