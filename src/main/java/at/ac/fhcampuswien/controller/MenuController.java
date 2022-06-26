@@ -46,12 +46,9 @@ public class MenuController {
 
     @FXML
     public void initialize() {
-
         comboBoxes[0] = countrySelector;
         comboBoxes[1] = categorySelector;
         comboBoxes[2] = languageSelector;
-
-        NewsApi.getNewsApi().setQuery("");
 
         filter1Text = filter1.getText();
         filter2Text = filter2.getText();
@@ -96,8 +93,6 @@ public class MenuController {
 
     @FXML
     void updateQueryParams() {
-
-
         customReqButton.setDisable(true);
 
         if (querySelector.getText().equals("")) {
@@ -162,7 +157,7 @@ public class MenuController {
 
         try {
             AppController.getAppController().requestArticles();
-            showArticleScene(AppController.getAppController().getArticles());
+            showArticleScene();
 
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -219,6 +214,7 @@ public class MenuController {
 
     @FXML
     void toggleAuthorWithLongestName(MouseEvent event) {
+        NewsApi.getNewsApi().setQuery("");
         NewsApi.getNewsApi().setEndpointEnum(EndpointEnum.topHeadlines
                 .getName());
         NewsApi.getNewsApi().setCountryEnum(CountryEnum.at.name());
@@ -274,6 +270,7 @@ public class MenuController {
     private void showArticlesWithShortHeadlines() {
         waitingGif.setVisible(true);
 
+
         NewsApi.getNewsApi().setEndpointEnum(EndpointEnum.topHeadlines
                 .getName());
         NewsApi.getNewsApi().setCountryEnum(CountryEnum.at.name());
@@ -297,7 +294,7 @@ public class MenuController {
                     ));
 
             AppController.getAppController().setArticles(res_articles);
-            showArticleScene(res_articles);
+            showArticleScene();
 
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -315,6 +312,7 @@ public class MenuController {
 
     @FXML
     private void getTopHeadlinesAustria() {
+        //disableToggle();
         waitingGif.setVisible(true);
 
         NewsApi.getNewsApi().setQuery("corona");
@@ -324,8 +322,7 @@ public class MenuController {
 
         try {
             AppController.getAppController().requestArticles();
-            showArticleScene(AppController.getAppController()
-                    .getArticles());
+            showArticleScene();
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -347,12 +344,10 @@ public class MenuController {
 
         NewsApi.getNewsApi().setQuery("bitcoin");
         NewsApi.getNewsApi().setEndpointEnum(EndpointEnum.everything.name());
-        NewsApi.getNewsApi().setCountryEnum(null);
 
         try {
             AppController.getAppController().requestArticles();
-            showArticleScene(AppController.getAppController()
-                    .getArticles());
+            showArticleScene();
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setContentText(e.getMessage());
@@ -367,14 +362,14 @@ public class MenuController {
         }
     }
 
-    private void showArticleScene(List<Article> articles) throws IOException,
+    private void showArticleScene() throws IOException,
             NewsApiException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class
                 .getResource("articleIrgendwas.fxml"));
         Scene articleScene = new Scene(fxmlLoader.load());
         ArticleIrgendwasController controller = fxmlLoader.getController();
 
-        controller.chooseNews(articles);
+        controller.chooseNews(AppController.getAppController().getArticles());
 
         articleScene.setFill(Color.TRANSPARENT);
 

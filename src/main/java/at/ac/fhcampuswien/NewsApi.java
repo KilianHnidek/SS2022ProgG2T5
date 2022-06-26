@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien;
 
 import java.io.IOException;
+
 import com.google.gson.Gson;
 import okhttp3.*;
 
@@ -46,11 +47,18 @@ public class NewsApi {
         this.query = query;
     }
 
-    public NewsResponse getResponse() throws NewsApiException{
+    public NewsResponse getResponse() throws NewsApiException {
         try {
             return NewsApi.newsApi.run();
-        }catch (NewsApiException exception) {
+        } catch (NewsApiException exception) {
             throw exception;
+        } finally {
+            endpointEnum = null;
+            categoryEnum = null;
+            countryEnum = null;
+            languageEnum = null;
+            sortByEnum = null;
+            query = null;
         }
     }
 

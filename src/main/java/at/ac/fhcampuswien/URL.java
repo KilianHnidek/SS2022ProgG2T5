@@ -15,9 +15,12 @@ public class URL {
     public String toString() {
         String res = url;
         res += "v2/" + endpointParam +
-                "?q=" + queryParam +
-                "&apiKey=" + API_KEY +
+                "?apiKey=" + API_KEY +
                 "&pagesize=100";
+
+        if (queryParam != null) {
+            res += "&q=" + queryParam;
+        }
 
         if (sortByParam != null) {
             res += "&sortBy=" + sortByParam;
