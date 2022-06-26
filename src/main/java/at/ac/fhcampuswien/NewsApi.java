@@ -55,7 +55,7 @@ public class NewsApi {
     }
 
     private NewsResponse run() throws NewsApiException {
-        Request req = new URL.Builder()
+        Request req = new Request.Builder().url(new URL.Builder()
                 .endpoint(endpointEnum)
                 .category(categoryEnum)
                 .country(countryEnum)
@@ -63,7 +63,7 @@ public class NewsApi {
                 .sortBy(sortByEnum)
                 .query(query)
                 .build()
-                .getRequest();
+                .toString()).build();
 
         try {
             Response response = client.newCall(req).execute();

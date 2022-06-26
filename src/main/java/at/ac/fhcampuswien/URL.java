@@ -12,10 +12,6 @@ public class URL {
     private final String sortByParam, countryParam, categoryParam, languageParam,
             queryParam, endpointParam;
 
-    public Request getRequest() {
-        return new Request.Builder().url(toString()).build();
-    }
-
     public String toString() {
         String res = url;
         res += "v2/" + endpointParam +
