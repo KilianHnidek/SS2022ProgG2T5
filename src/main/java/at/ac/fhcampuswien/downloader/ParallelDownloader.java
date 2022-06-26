@@ -13,15 +13,14 @@ public class ParallelDownloader extends at.ac.fhcampuswien.downloader.Downloader
     @Override
     public int process(List<String> urls) throws NewsApiException {
 
-        ExecutorService pool = Executors.newFixedThreadPool(Runtime
-                .getRuntime().availableProcessors());
+        ExecutorService pool = Executors.newFixedThreadPool(10);
 
         List<Future<String>> fileDownloaders = new ArrayList<>();
 
         try {
             for (int i = 0; i < urls.size(); i++) {
                 int j = i;
-                Callable<String> task = () -> saveUrl2File(urls.get(j));
+                Callable<String> task = () -> saveUrl2File(urls.get(j), "Par");
                 fileDownloaders.add(pool.submit(task));
             }
 

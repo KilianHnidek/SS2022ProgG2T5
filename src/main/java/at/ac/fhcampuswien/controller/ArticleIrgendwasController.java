@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
 public class ArticleIrgendwasController {
@@ -163,20 +164,25 @@ public class ArticleIrgendwasController {
     }
 
     public void downloadArticles() {
-        try {
-            SequentialDownloader s = new SequentialDownloader();
-            long startSeq = System.currentTimeMillis();
-            s.process(AppController.getAppController().downloadURLs());
-            long endSeq = System.currentTimeMillis();
 
+
+        try {
             ParallelDownloader p = new ParallelDownloader();
             long startPar = System.currentTimeMillis();
             p.process(AppController.getAppController().downloadURLs());
             long endPar = System.currentTimeMillis();
 
+            long startSeq;
+            long endSeq;
+
+            SequentialDownloader s = new SequentialDownloader();
+            startSeq = System.currentTimeMillis();
+            s.process(AppController.getAppController().downloadURLs());
+            endSeq = System.currentTimeMillis();
+
+
             long durSeq = endSeq - startSeq;
             long durPar = endPar - startPar;
-
 
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             if (durPar > durSeq) {
@@ -192,6 +198,7 @@ public class ArticleIrgendwasController {
                         + " der parallele Download.");
             }
             a.show();
+
         } catch (NewsApiException e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setHeaderText("Problem while downloading");

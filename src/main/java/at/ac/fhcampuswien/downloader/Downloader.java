@@ -14,12 +14,13 @@ import java.util.concurrent.ExecutionException;
 // Class is needed for exercise 4 - ignore for exercise 3 solution
 public abstract class Downloader {
 
+    int i = 1;
     public static final String HTML_EXTENSION = ".html";
     public static final String DIRECTORY_DOWNLOAD = "./download/";
 
     public abstract int process(List<String> urls) throws NewsApiException, ExecutionException, InterruptedException;
 
-    public String saveUrl2File(String urlString) throws NewsApiException {
+    public String saveUrl2File(String urlString, String type) throws NewsApiException {
         InputStream is = null;
         OutputStream os = null;
         String fileName;
@@ -35,7 +36,8 @@ public abstract class Downloader {
             if (fileName.contains("?")) {
                 fileName = fileName.replace("?", "");
             }
-            os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);   // write to /download/<filename>
+            os = new FileOutputStream(DIRECTORY_DOWNLOAD + type + " " + fileName);   // write to /download/<filename>
+
 
             byte[] b = new byte[2048];
             int length;

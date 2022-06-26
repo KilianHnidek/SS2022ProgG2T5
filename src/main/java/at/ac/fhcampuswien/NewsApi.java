@@ -1,7 +1,6 @@
 package at.ac.fhcampuswien;
 
 import java.io.IOException;
-
 import com.google.gson.Gson;
 import okhttp3.*;
 

@@ -9,11 +9,11 @@ public class SequentialDownloader extends Downloader {
 
     // returns number of downloaded article urls
     @Override
-    public int process(List<String> urls) throws NewsApiException{
+    public int process(List<String> urls) throws NewsApiException {
         int count = 0;
         for (String url : urls) {
             try {
-                String fileName = saveUrl2File(url);
+                String fileName = saveUrl2File(url, "Seq");
                 if(fileName != null)
                     count++;
             } catch (NewsApiException e){

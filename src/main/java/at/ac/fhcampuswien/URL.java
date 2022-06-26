@@ -15,8 +15,8 @@ public class URL {
     public String toString() {
         String res = url;
         res += "v2/" + endpointParam +
-                "?apiKey=" + API_KEY +
-                "&pagesize=100";
+                "?apiKey=" + API_KEY_2 +
+                "&pagesize=20";
 
         if (queryParam != null) {
             res += "&q=" + queryParam;

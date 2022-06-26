@@ -38,9 +38,11 @@ public class AppController {
         return articles != null ? articles : new ArrayList<>();
     }
 
-    public void requestArticles() throws NewsApiException {
+    public boolean requestArticles() throws NewsApiException {
         NewsResponse response = NewsApi.getNewsApi().getResponse();
         setArticles(response.getArticles());
+        if (response.getArticles() != null) return true;
+        return false;
         //return response.getArticles();
     }
 
